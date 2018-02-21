@@ -1,0 +1,18 @@
+Von Anfang
+	Gebe "Kommando" aus.
+    Erschaffe a und weise 5 zu.
+    Gebe Wert für a ein:
+    Erschaffe b und weise 5 zu.
+    Erschaffe b und weise 10 zu.
+    Füge 3 zu b hinzu.
+    Ziehe b von a ab.
+    Vervielfältige a um b.
+    Teile a durch b.
+    Gebe b aus.
+    Gebe 3 aus.
+    Falls 10 größer 0 dann Gebe "Fabelhaft" aus.
+    Solange 10 größer 0 Gebe "Ausgezeichnet" aus.
+    Tätigkeitsbeschreibung von test: Benötigt wird folgendes: a Anweisungen: Gebe a aus. Schließe Tätigkeit ab.
+    Gebe 3 aus.
+    Kommentar: Dies ist ein Kommentar Kommentar Ende.
+bis Ende.
