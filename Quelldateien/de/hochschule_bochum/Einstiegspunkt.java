@@ -28,6 +28,7 @@ public class Einstiegspunkt {
         läufer.walk(generator, tree);
 
         AbstrakteKellerMaschine abstrakteKellerMaschine = new AbstrakteKellerMaschine();
+        abstrakteKellerMaschine.setDebug(true);
         abstrakteKellerMaschine.parseCode(new File("zwischencode.txt"));
 
         System.out.println("mache jetzt geilen stuff");

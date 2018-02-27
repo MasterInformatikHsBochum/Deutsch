@@ -13,12 +13,16 @@ public class AbstrakteKellerMaschine
 	private ArrayList<String> machineCode = new ArrayList<String>();
 	private Object[] register = new Object[REGISTER_SIZE];
 	int pointer = 0;
+	private boolean debug = false;
 
 	public AbstrakteKellerMaschine() {
 		stack = new Stack<Object>();
 	}
 
 	public void parseCode(File code) {
+		if(debug) {
+			System.out.println("Abstrakte Kellermaschine: Debug-Information an.");
+		}
 		try
 		{
 			String line = null;
@@ -29,6 +33,9 @@ public class AbstrakteKellerMaschine
 			while(pointer < machineCode.size()-1) {
 				execute(machineCode.get(pointer));
 				pointer++;
+			}
+			if (debug) {
+				System.out.println("Abstrakte Kellermaschine beendet.");
 			}
 		}
 		catch (java.io.IOException e)
@@ -160,7 +167,16 @@ public class AbstrakteKellerMaschine
 		} else if (command.startsWith("LEGE R")) {
 			moveR(Integer.parseInt(command.substring(command.lastIndexOf('R') + 1)));
 		}
-		System.out.println("Stack:" + stack.toString());
+		if(debug)
+		{
+			String registereintraege = "";
+			for(int i = 0; i < register.length;i++) {
+				if (register[i] != null) {
+						registereintraege += ",R" + i + ":" + register[i];
+				}
+			}
+			System.out.println("Kommando:" + command + "Stapel:" + stack.toString() + registereintraege);
+		}
 	}
 
 	private void moveR(int r)
@@ -180,5 +196,15 @@ public class AbstrakteKellerMaschine
 	private void pop()
 	{
 		stack.pop();
+	}
+
+	public void setDebug(boolean debug)
+	{
+		this.debug = debug;
+	}
+
+	public boolean isDebug()
+	{
+		return debug;
 	}
 }
