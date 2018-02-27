@@ -18,57 +18,69 @@ anweisung
     |   tätigkeitsAufruf
     ;
 
+variable
+    :   VARIABLE
+    ;
+
+zahl
+    :   ZAHL
+    ;
+
+wahrheitswert
+    :   WAHRHEITSWERT
+    ;
+
 zeichenkette
-    :   '"'(ZEICHENKETTE | LEERRAUM)*?'"'
+    :   ZEICHENKETTE
+    ;
+
+operator
+    :   OPERATOR
     ;
 
 zuweisung
-    :   'Erschaffe ' VARIABLE ' und weise ' (ZAHL | VARIABLE | WAHRHEITSWERT | zeichenkette) ' zu.'
+    :   'Erschaffe ' variable ' und weise ' (zahl | variable | wahrheitswert | zeichenkette) ' zu.'
     ;
 
 ausgabe
-    :   'Gebe ' (ZAHL | zeichenkette | WAHRHEITSWERT | VARIABLE) ' aus.'
+    :   'Gebe ' (zahl | wahrheitswert | variable | zeichenkette) ' aus.'
     ;
 
 eingabe
-    :   'Gebe Wert für ' (VARIABLE) ' ein:'
+    :   'Gebe Wert für ' (variable) ' ein:'
     ;
 
 addition
-    :   'Füge ' (ZAHL | VARIABLE) ' zu ' VARIABLE ' hinzu.'
+    :   'Füge ' (zahl | variable) ' zu ' variable ' hinzu.'
     ;
 
 subtraktion
-    :   'Ziehe ' (ZAHL | VARIABLE) ' von ' VARIABLE ' ab.'
+    :   'Ziehe ' (zahl | variable) ' von ' variable ' ab.'
     ;
 
 multiplikation
-    :   'Vervielfältige ' (ZAHL | VARIABLE) ' um ' VARIABLE '.'
+    :   'Vervielfältige ' (zahl | variable) ' um ' variable '.'
     ;
 
 division
-    :   'Teile ' (ZAHL | VARIABLE) ' durch ' VARIABLE '.'
+    :   'Teile ' (zahl | variable) ' durch ' variable '.'
     ;
 
 bedingteAnweisung
-    :   ('Falls ' (ZAHL | VARIABLE | WAHRHEITSWERT) OPERATOR (ZAHL | VARIABLE | WAHRHEITSWERT) ' dann ' (anweisung)+) 'Anweisungsende.'
-    |   ('Falls ' (ZAHL | VARIABLE | WAHRHEITSWERT) OPERATOR (ZAHL | VARIABLE | WAHRHEITSWERT) ' dann ' (anweisung)+ ' sonst ' (anweisung)+) 'Anweisungsende.'
+    :   'Falls' (zahl | variable | wahrheitswert) operator (zahl | variable | wahrheitswert) 'dann' (anweisung)+ 'sonst' (anweisung)+ 'Anweisungsende.'
+    |   'Falls' (zahl | variable | wahrheitswert) operator (zahl | variable | wahrheitswert) 'dann' (anweisung)+ 'Anweisungsende.'
     ;
 
-wiederholung:
-    'Solange '
-    (ZAHL | VARIABLE | WAHRHEITSWERT)
-    OPERATOR
-    (ZAHL | VARIABLE | WAHRHEITSWERT)
-    (anweisung)*
+wiederholung
+    :   'Solange' (zahl | variable | wahrheitswert) operator (zahl | variable | wahrheitswert) (anweisung)* 'Wiederholungsende.'
     ;
 
 tätigkeit
-    :   'Tätigkeitsbeschreibung von ' (VARIABLE) ':' 'Benötigt wird folgendes:' (VARIABLE) 'Anweisungen:' (anweisung)* 'Schließe Tätigkeit ab.'
+    :   'Tätigkeitsbeschreibung von' (variable) ':' 'Benötigt wird folgendes:' (variable) 'Anweisungen:' (anweisung)* 'Schließe Tätigkeit ab.'
     ;
 
 tätigkeitsAufruf
-    :   'Führe Tätigkeit ' (VARIABLE) ' mit ' (VARIABLE) ' aus.'
+    :   'Führe Tätigkeit' (variable) 'mit' (variable) 'aus.'
     ;
 
 VARIABLE
@@ -85,7 +97,7 @@ WAHRHEITSWERT
     ;
 
 ZEICHENKETTE
-    :   [äöüßa-zÄÖÜA-Z0-9]+
+    :   '"' .*? '"'
     ;
 
 OPERATOR

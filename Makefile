@@ -17,7 +17,8 @@ Test:
 	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Arithmetik.deutsch" && \
 	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Kommentare.deutsch" && \
 	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Bedingte Anweisungen.deutsch" && \
-	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Wiederholungen.deutsch"
+	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Wiederholungen.deutsch" && \
+	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Funktionen.deutsch"
 
 
 Prototyp:

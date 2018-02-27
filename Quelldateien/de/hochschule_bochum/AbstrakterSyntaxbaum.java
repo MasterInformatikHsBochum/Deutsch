@@ -27,8 +27,7 @@ public class AbstrakterSyntaxbaum {
         String programmName = f.getName().split(".deutsch")[0];
         String bildName = programmName + " - Abstrakter Syntaxbaum.png";
 
-        int width = 640, height = 480;
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage = new BufferedImage(breite, hoehe, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g = bufferedImage.createGraphics();
         viewer.paint(g);
@@ -37,7 +36,7 @@ public class AbstrakterSyntaxbaum {
     }
 
     public void speicherAlsPng(String name) throws IOException {
-        int breite = 640, hoehe = 480;
+        int breite = 4096, hoehe = 2160;
         speicherAlsPng(name, breite, hoehe);
     }
 }

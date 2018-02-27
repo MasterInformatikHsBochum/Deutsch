@@ -40,6 +40,42 @@ public class DeutschBaseListener implements DeutschListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVariable(DeutschParser.VariableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariable(DeutschParser.VariableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterZahl(DeutschParser.ZahlContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitZahl(DeutschParser.ZahlContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterWahrheitswert(DeutschParser.WahrheitswertContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWahrheitswert(DeutschParser.WahrheitswertContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterZeichenkette(DeutschParser.ZeichenketteContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -47,6 +83,18 @@ public class DeutschBaseListener implements DeutschListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitZeichenkette(DeutschParser.ZeichenketteContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOperator(DeutschParser.OperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOperator(DeutschParser.OperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
