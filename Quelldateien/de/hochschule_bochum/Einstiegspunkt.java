@@ -3,7 +3,6 @@ package de.hochschule_bochum;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.antlr.v4.gui.TreeViewer;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -19,12 +18,13 @@ public class Einstiegspunkt {
         DeutschParser parser = new DeutschParser(tokens);
         ParseTree tree = parser.programm();
 
-        TreeViewer viewer = new TreeViewer(Arrays.asList(
-                parser.getRuleNames()), tree);
+        AbstrakterSyntaxbaum abstrakterSyntaxbaum = new AbstrakterSyntaxbaum(
+            Arrays.asList(parser.getRuleNames()),
+            tree
+        );
 
         try {
-            viewer.save("Abstrakter Syntaxbaum.png");
-            System.out.println("Abstrakter Syntaxbaum wurde nach \"Abstrakter Syntaxbaum.png\" geschrieben.");
+            abstrakterSyntaxbaum.speicherAlsPng(args[0]);
         } catch (Exception e) {
             System.err.println("Bild des abstrakten Syntaxbaumes konnte nicht gespeichert werden.");
         }
