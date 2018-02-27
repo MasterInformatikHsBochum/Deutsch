@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.antlr.v4.gui.TreeViewer;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -23,8 +24,8 @@ public class Einstiegspunkt {
 
 
         Codegenerierung generator = new Codegenerierung();
-        ParseTreeWalker l‰ufer = new ParseTreeWalker();
-        l‰ufer.walk(generator, tree);
+        ParseTreeWalker l√§ufer = new ParseTreeWalker();
+        l√§ufer.walk(generator, tree);
 
         AbstrakteKellerMaschine abstrakteKellerMaschine = new AbstrakteKellerMaschine();
         abstrakteKellerMaschine.parseCode(new File("zwischencode.txt"));
@@ -33,6 +34,9 @@ public class Einstiegspunkt {
         TreeViewer viewer = new TreeViewer(Arrays.asList(
                 parser.getRuleNames()), tree);
 
+
+        AbstrakterSyntaxbaum abstrakterSyntaxbaum = new AbstrakterSyntaxbaum(
+        Arrays.asList(parser.getRuleNames()), tree);
 
         try {
             abstrakterSyntaxbaum.speicherAlsPng(args[0]);
