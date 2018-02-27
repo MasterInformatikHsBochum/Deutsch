@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -54,48 +55,36 @@ public class Codegenerierung extends DeutschBaseListener {
 
 	@Override
 	public void enterAnweisung(AnweisungContext ctx) {
-		System.out.println("Beginne Anweisung" + ctx);
 		super.enterAnweisung(ctx);
 	}
 
 	@Override
-	public void enterZuweisung(ZuweisungContext ctx) {
-		zwischenCode.add("#Zuweisung start");
-		for (int i = 0; i < ctx.getChildCount(); i++) {
-			TerminalNode typeNode = (TerminalNode) ctx.getChild(i);
-			if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE) {
-				if (variablen.containsKey(typeNode.getSymbol())) {
-					try {
-						throw new Exception("Variable schon deklariert");
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				variablen.put(typeNode.getText(), variablen.size());
+	public void enterZuweisung(ZuweisungContext ctx)
+	{
+		for (int i = 0; i < ctx.getChildCount(); i++)
+		{
+			TerminalNode typeNode = (TerminalNode)ctx.getChild(i);
+			if (typeNode.getSymbol().getType() == DeutschLexer.ZAHL)
+			{
+				zwischenCode.add("LADE " + typeNode.getText());
 			}
-
+		}
+		for (int i = 0; i < ctx.getChildCount(); i++)
+		{
+			TerminalNode typeNode = (TerminalNode)ctx.getChild(i);
+			if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE)
+			{
+				if(variablen.containsKey(typeNode.getText())){
+					zwischenCode.add("AUSKELLERN R" + variablen.get(typeNode.getText()));
+				} else
+				{
+					int size = variablen.size();
+					variablen.put(typeNode.getText(), size);
+					zwischenCode.add("AUSKELLERN R" + size);
+				}
+			}
 		}
 		super.enterZuweisung(ctx);
-	}
-
-	@Override
-	public void exitZuweisung(ZuweisungContext ctx) {
-		Token variable = null;
-		for (int i = 0; i < ctx.getChildCount(); i++) {
-			TerminalNode typeNode = (TerminalNode) ctx.getChild(i);
-			if (typeNode.getSymbol().getType() == DeutschLexer.ZAHL) {
-
-				zwischenCode.add(typeNode.getText());
-			}
-			if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE) {
-				variable = typeNode.getSymbol();
-			}
-		}
-		zwischenCode.add("STORE");
-		zwischenCode.add(Integer.toString(requireVariableIndex(variable)));
-		zwischenCode.add("#exit Zuweisung");
-		super.exitZuweisung(ctx);
 	}
 
 	private int requireVariableIndex(Token varNameToken) {
@@ -118,10 +107,10 @@ public class Codegenerierung extends DeutschBaseListener {
 				TerminalNode typeNode = (TerminalNode) ctx.getChild(i);
 				if (typeNode.getSymbol().getType() == DeutschLexer.OPERATOR) {
 					switch (typeNode.getText()) {
-					case "gr��er":
+					case "größer":
 
 						break;
-					case "gr��er gleich":
+					case "größer gleich":
 
 						break;
 					case "gleich":
@@ -162,75 +151,60 @@ public class Codegenerierung extends DeutschBaseListener {
 
 	@Override
 	public void enterAusgabe(AusgabeContext ctx) {
-		System.out.println("Ausgabe");
 		super.enterAusgabe(ctx);
 	}
 
 	@Override
 	public void enterAddition(AdditionContext ctx) {
-		zwischenCode.add("#enter Addition");
+		lade(ctx);
+		zwischenCode.add("ADD");
+		speicher(ctx,3);
+		super.enterAddition(ctx);
+	}
+
+
+	private void speicher(ParserRuleContext ctx, int pos){
+			TerminalNode typeNode = (TerminalNode) ctx.getChild(pos);
+			if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE || typeNode.getSymbol().getType() == DeutschLexer.ZEICHENKETTE)
+			{
+				zwischenCode.add("AUSKELLERN R" + Integer.toString(requireVariableIndex(typeNode.getSymbol())));
+			}
+	}
+
+	private void lade(ParserRuleContext ctx)
+	{
 		for (int i = 0; i < ctx.getChildCount(); i++) {
 			TerminalNode typeNode = (TerminalNode) ctx.getChild(i);
-			if (typeNode.getSymbol().getType() == DeutschLexer.ZAHL) {
-				zwischenCode.add(ctx.getChild(i).getText());
-			}
-			if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE) {
-				zwischenCode.add(Integer.toString(requireVariableIndex(typeNode.getSymbol())));
+			if (typeNode.getSymbol().getType() == DeutschLexer.ZAHL || typeNode.getSymbol().getType() == DeutschLexer.ZEICHENKETTE) {
+				zwischenCode.add("LADE "+ctx.getChild(i).getText());
+			} else if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE) {
+				zwischenCode.add("LEGE R" +Integer.toString(requireVariableIndex(typeNode.getSymbol())));
 			}
 		}
-		zwischenCode.add("ADD");
-		zwischenCode.add("#exit Addition");
-		super.enterAddition(ctx);
 	}
 
 	@Override
 	public void enterDivision(DivisionContext ctx) {
-		for (int i = 0; i < ctx.getChildCount(); i++) {
-			TerminalNode typeNode = (TerminalNode) ctx.getChild(i);
-			if (typeNode.getSymbol().getType() == DeutschLexer.ZAHL) {
-				zwischenCode.add(ctx.getChild(i).getText());
-			}
-			if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE) {
-				zwischenCode.add(Integer.toString(requireVariableIndex(typeNode.getSymbol())));
-			}
-		}
+		lade(ctx);
 		zwischenCode.add("DIV");
+		speicher(ctx,1);
 		super.enterDivision(ctx);
 	}
 
 	@Override
 	public void enterMultiplikation(MultiplikationContext ctx) {
-		for (int i = 0; i < ctx.getChildCount(); i++) {
-			TerminalNode typeNode = (TerminalNode) ctx.getChild(i);
-			if (typeNode.getSymbol().getType() == DeutschLexer.ZAHL) {
-				zwischenCode.add(ctx.getChild(i).getText());
-			}
-			if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE) {
-				zwischenCode.add(Integer.toString(requireVariableIndex(typeNode.getSymbol())));
-			}
-		}
+		lade(ctx);
 		zwischenCode.add("MUL");
+		speicher(ctx,1);
 		super.enterMultiplikation(ctx);
 	}
 
 	@Override
 	public void enterSubtraktion(SubtraktionContext ctx) {
-		for (int i = 0; i < ctx.getChildCount(); i++) {
-			TerminalNode typeNode = (TerminalNode) ctx.getChild(i);
-			if (typeNode.getSymbol().getType() == DeutschLexer.ZAHL) {
-				zwischenCode.add(ctx.getChild(i).getText());
-			}
-			if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE) {
-				zwischenCode.add(Integer.toString(requireVariableIndex(typeNode.getSymbol())));
-			}
-		}
+		lade(ctx);
 		zwischenCode.add("SUB");
+		speicher(ctx,3);
 		super.enterSubtraktion(ctx);
 	}
 
-	@Override
-	public void visitTerminal(TerminalNode node) {
-		System.out.println("visit Terminal " + node.getText());
-		super.visitTerminal(node);
-	}
 }

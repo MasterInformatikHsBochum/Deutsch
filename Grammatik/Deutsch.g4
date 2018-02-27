@@ -43,11 +43,11 @@ subtraktion
     ;
 
 multiplikation
-    :   'Vervielfältige ' (ZAHL | VARIABLE) ' um ' VARIABLE '.'
+    :   'Vervielfältige ' VARIABLE ' um ' (ZAHL | VARIABLE) '.'
     ;
 
 division
-    :   'Teile ' (ZAHL | VARIABLE) ' durch ' VARIABLE '.'
+    :   'Teile ' VARIABLE ' durch ' (ZAHL | VARIABLE) '.'
     ;
 
 bedingteAnweisung

@@ -5,6 +5,7 @@
     <output-test url="file://$MODULE_DIR$/Kompilate/test-classes" />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/Quelldateien/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Quelldateien" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/Kompilate" />
     </content>
     <orderEntry type="inheritedJdk" />
