@@ -2,6 +2,7 @@ grammar Deutsch;
 
 programm
     :   'Von Anfang' (anweisung)* 'bis Ende.'
+    |   tätigkeit
     ;
 
 anweisung
@@ -14,7 +15,6 @@ anweisung
     |   division
     |   bedingteAnweisung
     |   wiederholung
-    |   tätigkeit
     |   tätigkeitsAufruf
     ;
 
