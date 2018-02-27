@@ -1,11 +1,18 @@
-Von Anfang
-    Tätigkeitsbeschreibung von test:
-        Benötigt wird folgendes: a
-        Anweisungen:
-            Gebe a aus.
-            Füge 3 zu a hinzu.
-            Gebe a aus.
-    Schließe Tätigkeit ab.
+Tätigkeitsbeschreibung von funktionEins:
+    Benötigt wird folgendes: a
+    Anweisungen:
+        Gebe a aus.
+        Füge 3 zu a hinzu.
+        Gebe a aus.
+Schließe Tätigkeit ab.
 
-    Führe Tätigkeit test mit a aus.
+Tätigkeitsbeschreibung von funktionZwei:
+    Benötigt wird folgendes: a
+    Anweisungen:
+        Gib a zurück.
+Schließe Tätigkeit ab.
+
+Von Anfang
+    Führe Tätigkeit funktionEins mit a aus.
+    Führe Tätigkeit funktionZwei mit a aus.
 bis Ende.
