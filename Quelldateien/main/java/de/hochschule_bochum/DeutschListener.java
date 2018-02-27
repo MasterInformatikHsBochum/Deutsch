@@ -1,5 +1,5 @@
 package de.hochschule_bochum;
-
+// Generated from Deutsch.g4 by ANTLR 4.5.1
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -137,4 +137,14 @@ public interface DeutschListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTätigkeit(DeutschParser.TätigkeitContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DeutschParser#tätigkeitsAufruf}.
+	 * @param ctx the parse tree
+	 */
+	void enterTätigkeitsAufruf(DeutschParser.TätigkeitsAufrufContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DeutschParser#tätigkeitsAufruf}.
+	 * @param ctx the parse tree
+	 */
+	void exitTätigkeitsAufruf(DeutschParser.TätigkeitsAufrufContext ctx);
 }

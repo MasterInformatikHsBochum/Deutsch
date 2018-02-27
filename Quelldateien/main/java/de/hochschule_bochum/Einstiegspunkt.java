@@ -10,7 +10,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 public class Einstiegspunkt {
     public static void main(String[] args) throws IOException {
-        ANTLRFileStream inputFileStream = new ANTLRFileStream(args[0]);
+        ANTLRFileStream inputFileStream = new ANTLRFileStream(args[0], "utf-8");
         System.out.println("Eingabe: " + inputFileStream.toString());
 
         DeutschLexer lexer = new DeutschLexer(inputFileStream);
