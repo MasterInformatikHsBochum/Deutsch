@@ -76,7 +76,7 @@ wiederholung
     ;
 
 tätigkeit
-    :   'Tätigkeitsbeschreibung von' (variable) ':' 'Benötigt wird folgendes:' (variable) 'Anweisungen:' (anweisung)* 'Schließe Tätigkeit ab.'
+    :   'Tätigkeitsbeschreibung von' (variable) ':' 'Benötigt wird folgendes:' (variable) 'Anweisungen:' (anweisung)* ('Gib' (zahl | variable | wahrheitswert | zeichenkette) 'zurück.')? 'Schließe Tätigkeit ab.'
     ;
 
 tätigkeitsAufruf
@@ -84,7 +84,7 @@ tätigkeitsAufruf
     ;
 
 VARIABLE
-    :   [a-z]+
+    :   [a-zA-Z]+
     ;
 
 ZAHL

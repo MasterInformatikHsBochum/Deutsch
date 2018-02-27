@@ -1,4 +1,4 @@
-Tätigkeitsbeschreibung von test:
+Tätigkeitsbeschreibung von funktionEins:
     Benötigt wird folgendes: a
     Anweisungen:
         Gebe a aus.
@@ -6,6 +6,13 @@ Tätigkeitsbeschreibung von test:
         Gebe a aus.
 Schließe Tätigkeit ab.
 
+Tätigkeitsbeschreibung von funktionZwei:
+    Benötigt wird folgendes: a
+    Anweisungen:
+        Gib a zurück.
+Schließe Tätigkeit ab.
+
 Von Anfang
-    Führe Tätigkeit test mit a aus.
+    Führe Tätigkeit funktionEins mit a aus.
+    Führe Tätigkeit funktionZwei mit a aus.
 bis Ende.
