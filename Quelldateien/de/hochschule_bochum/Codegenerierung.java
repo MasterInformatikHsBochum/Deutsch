@@ -1,4 +1,4 @@
-package main.java.de.hochschule_bochum;
+package de.hochschule_bochum;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,15 +14,15 @@ import java.util.Map;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import main.java.de.hochschule_bochum.DeutschParser.AdditionContext;
-import main.java.de.hochschule_bochum.DeutschParser.AnweisungContext;
-import main.java.de.hochschule_bochum.DeutschParser.AusgabeContext;
-import main.java.de.hochschule_bochum.DeutschParser.BedingteAnweisungContext;
-import main.java.de.hochschule_bochum.DeutschParser.DivisionContext;
-import main.java.de.hochschule_bochum.DeutschParser.MultiplikationContext;
-import main.java.de.hochschule_bochum.DeutschParser.ProgrammContext;
-import main.java.de.hochschule_bochum.DeutschParser.SubtraktionContext;
-import main.java.de.hochschule_bochum.DeutschParser.ZuweisungContext;
+import de.hochschule_bochum.DeutschParser.AdditionContext;
+import de.hochschule_bochum.DeutschParser.AnweisungContext;
+import de.hochschule_bochum.DeutschParser.AusgabeContext;
+import de.hochschule_bochum.DeutschParser.BedingteAnweisungContext;
+import de.hochschule_bochum.DeutschParser.DivisionContext;
+import de.hochschule_bochum.DeutschParser.MultiplikationContext;
+import de.hochschule_bochum.DeutschParser.ProgrammContext;
+import de.hochschule_bochum.DeutschParser.SubtraktionContext;
+import de.hochschule_bochum.DeutschParser.ZuweisungContext;
 
 public class Codegenerierung extends DeutschBaseListener {
 	List<String> zwischenCode = new ArrayList<String>();
@@ -118,10 +118,10 @@ public class Codegenerierung extends DeutschBaseListener {
 				TerminalNode typeNode = (TerminalNode) ctx.getChild(i);
 				if (typeNode.getSymbol().getType() == DeutschLexer.OPERATOR) {
 					switch (typeNode.getText()) {
-					case "größer":
+					case "grï¿½ï¿½er":
 
 						break;
-					case "größer gleich":
+					case "grï¿½ï¿½er gleich":
 
 						break;
 					case "gleich":

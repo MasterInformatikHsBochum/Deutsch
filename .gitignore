@@ -4,6 +4,7 @@
 /Kompilate
 
 /*.png
+*.txt
 
 .settings
 .vscode

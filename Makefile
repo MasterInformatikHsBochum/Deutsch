@@ -4,8 +4,8 @@ default: Deutsch
 Grammatik:
 	cd Grammatik && \
 	antlr4 Deutsch.g4 -o generiert && \
-	cp generiert/*.java ../Quelldateien/main/java/de/hochschule_bochum/ && \
-	grep -rL "package de.hochschule_bochum;" ../Quelldateien/main/java/de/hochschule_bochum/*.java | xargs sed -i '1s/^/package de.hochschule_bochum;\n/'
+	cp generiert/*.java ../Quelldateien/de/hochschule_bochum/ && \
+	grep -rL "package de.hochschule_bochum;" ../Quelldateien/de/hochschule_bochum/*.java | xargs sed -i '1s/^/package de.hochschule_bochum;\n/'
 
 Deutsch:
 	mvn clean install assembly:single
