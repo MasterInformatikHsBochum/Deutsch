@@ -1,11 +1,7 @@
-@header {
-package de.hochschule_bochum;
-}
-
 grammar Deutsch;
 
 programm
-    :   'Von Anfang' (anweisung)+ 'bis Ende.'
+    :   'Von Anfang' (anweisung)* 'bis Ende.'
     ;
 
 anweisung
@@ -19,10 +15,11 @@ anweisung
     |   bedingteAnweisung
     |   wiederholung
     |   tätigkeit
+    |   tätigkeitsAufruf
     ;
 
 zeichenkette
-    :   '"'ZEICHENKETTE'"'
+    :   '"'(ZEICHENKETTE | LEERRAUM)*?'"'
     ;
 
 zuweisung
@@ -67,9 +64,12 @@ wiederholung:
     ;
 
 tätigkeit
-    :   'Tätigkeitsbeschreibung von ' (VARIABLE) ': ' 'Benötigt wird folgendes: ' (VARIABLE) 'Anweisungen: ' (anweisung)* 'Schließe Tätigkeit ab.'
+    :   'Tätigkeitsbeschreibung von ' (VARIABLE) ':' 'Benötigt wird folgendes:' (VARIABLE) 'Anweisungen:' (anweisung)* 'Schließe Tätigkeit ab.'
     ;
 
+tätigkeitsAufruf
+    :   'Führe Tätigkeit ' (VARIABLE) ' mit ' (VARIABLE) ' aus.'
+    ;
 
 VARIABLE
     :   [a-z]+
@@ -85,7 +85,7 @@ WAHRHEITSWERT
     ;
 
 ZEICHENKETTE
-    :   [a-zA-Z]+
+    :   [äöüßa-zÄÖÜA-Z0-9]+
     ;
 
 OPERATOR
@@ -102,6 +102,6 @@ LEERRAUM
     :   [ \n\t]+ -> skip
     ;
 
-COMMENT
-   :   'Kommentar: ' [ a-zA-Z0-9]* 'Kommentar Ende.' -> skip
+KOMMENTAR
+   :   'Kommentar:' .*? 'Kommentar Ende.' -> skip
    ;

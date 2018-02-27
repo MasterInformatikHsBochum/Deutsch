@@ -1,4 +1,5 @@
 package de.hochschule_bochum;
+// Generated from Deutsch.g4 by ANTLR 4.5.1
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -166,6 +167,18 @@ public class DeutschBaseListener implements DeutschListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTätigkeit(DeutschParser.TätigkeitContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTätigkeitsAufruf(DeutschParser.TätigkeitsAufrufContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTätigkeitsAufruf(DeutschParser.TätigkeitsAufrufContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
