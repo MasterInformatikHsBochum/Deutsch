@@ -51,8 +51,8 @@ division
     ;
 
 bedingteAnweisung
-    :   ('Falls ' (ZAHL | VARIABLE | WAHRHEITSWERT) OPERATOR (ZAHL | VARIABLE | WAHRHEITSWERT) ' dann ' (anweisung)+)
-    |   ('Falls ' (ZAHL | VARIABLE | WAHRHEITSWERT) OPERATOR (ZAHL | VARIABLE | WAHRHEITSWERT) ' dann ' (anweisung)+ ' sonst ' (anweisung)+)
+    :   ('Falls ' (ZAHL | VARIABLE | WAHRHEITSWERT) OPERATOR (ZAHL | VARIABLE | WAHRHEITSWERT) ' dann ' (anweisung)+) 'Anweisungsende.'
+    |   ('Falls ' (ZAHL | VARIABLE | WAHRHEITSWERT) OPERATOR (ZAHL | VARIABLE | WAHRHEITSWERT) ' dann ' (anweisung)+ ' sonst ' (anweisung)+) 'Anweisungsende.'
     ;
 
 wiederholung:

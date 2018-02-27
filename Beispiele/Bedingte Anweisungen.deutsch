@@ -2,10 +2,10 @@ Von Anfang
     Erschaffe a und weise 10 zu.
     Erschaffe b und weise 0 zu.
 
-    Falls a größer 0 dann Gebe "Fabelhaft" aus.
+    Falls a größer 0 dann Gebe "Fabelhaft" aus. Anweisungsende.
 
     Kommentar:
-        Falls b größer 0 dann Gebe "größer" aus. sonst Gebe "kleiner" aus.
+        Falls b größer 0 dann Gebe "größer" aus. sonst Gebe "kleiner" aus. Anweisungsende.
         Bedingte Anweisungen mit alternativem Fall funktionieren noch nicht.
     Kommentar Ende.
 bis Ende.
