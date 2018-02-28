@@ -23,6 +23,10 @@ import de.hochschule_bochum.DeutschParser.DivisionContext;
 import de.hochschule_bochum.DeutschParser.MultiplikationContext;
 import de.hochschule_bochum.DeutschParser.ProgrammContext;
 import de.hochschule_bochum.DeutschParser.SubtraktionContext;
+import de.hochschule_bochum.DeutschParser.VariableContext;
+import de.hochschule_bochum.DeutschParser.WahrheitswertContext;
+import de.hochschule_bochum.DeutschParser.ZahlContext;
+import de.hochschule_bochum.DeutschParser.ZeichenketteContext;
 import de.hochschule_bochum.DeutschParser.ZuweisungContext;
 
 public class Codegenerierung extends DeutschBaseListener {
@@ -36,6 +40,7 @@ public class Codegenerierung extends DeutschBaseListener {
 	@Override
 	public void enterProgramm(ProgrammContext ctx) {
 		System.out.println("starte Programm" + ctx);
+		System.out.println(ctx.toStringTree() );
 		super.enterProgramm(ctx);
 	}
 
@@ -63,23 +68,24 @@ public class Codegenerierung extends DeutschBaseListener {
 	{
 		for (int i = 0; i < ctx.getChildCount(); i++)
 		{
-			TerminalNode typeNode = (TerminalNode)ctx.getChild(i);
-			if (typeNode.getSymbol().getType() == DeutschLexer.ZAHL)
+			if (ctx.getChild(i) instanceof ZahlContext)
 			{
-				zwischenCode.add("LADE " + typeNode.getText());
+				ZahlContext zahlctx = (ZahlContext) ctx.getChild(i);
+//				zwischenCode.add("LADE " + typeNode.getText());
+				zwischenCode.add("LADE " + zahlctx.getChild(0).getText());
 			}
 		}
 		for (int i = 0; i < ctx.getChildCount(); i++)
 		{
-			TerminalNode typeNode = (TerminalNode)ctx.getChild(i);
-			if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE)
+			if (ctx.getChild(i) instanceof VariableContext)
 			{
-				if(variablen.containsKey(typeNode.getText())){
-					zwischenCode.add("AUSKELLERN R" + variablen.get(typeNode.getText()));
+				VariableContext varctx = (VariableContext) ctx.getChild(i);
+				if(variablen.containsKey(varctx.getChild(0).getText())){
+					zwischenCode.add("AUSKELLERN R" + variablen.get(varctx.getChild(0).getText()));
 				} else
 				{
 					int size = variablen.size();
-					variablen.put(typeNode.getText(), size);
+					variablen.put(varctx.getChild(0).getText(), size);
 					zwischenCode.add("AUSKELLERN R" + size);
 				}
 			}
@@ -87,6 +93,7 @@ public class Codegenerierung extends DeutschBaseListener {
 		super.enterZuweisung(ctx);
 	}
 
+	
 	private int requireVariableIndex(Token varNameToken) {
 		Integer varIndex = variablen.get(varNameToken.getText());
 		if (varIndex == null) {
@@ -164,21 +171,23 @@ public class Codegenerierung extends DeutschBaseListener {
 
 
 	private void speicher(ParserRuleContext ctx, int pos){
-			TerminalNode typeNode = (TerminalNode) ctx.getChild(pos);
-			if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE || typeNode.getSymbol().getType() == DeutschLexer.ZEICHENKETTE)
+//			TerminalNode typeNode = (TerminalNode) ctx.getChild(pos);
+			if (ctx.getChild(pos) instanceof VariableContext || ctx.getChild(pos) instanceof ZeichenketteContext)
 			{
-				zwischenCode.add("AUSKELLERN R" + Integer.toString(requireVariableIndex(typeNode.getSymbol())));
+				zwischenCode.add("AUSKELLERN R" + Integer.toString(requireVariableIndex(((TerminalNode)ctx.getChild(pos).getChild(0)).getSymbol())));
 			}
 	}
 
 	private void lade(ParserRuleContext ctx)
 	{
 		for (int i = 0; i < ctx.getChildCount(); i++) {
-			TerminalNode typeNode = (TerminalNode) ctx.getChild(i);
-			if (typeNode.getSymbol().getType() == DeutschLexer.ZAHL || typeNode.getSymbol().getType() == DeutschLexer.ZEICHENKETTE) {
+//			TerminalNode typeNode = (TerminalNode) ctx.getChild(i);
+			if (ctx.getChild(i) instanceof ZahlContext || ctx.getChild(i) instanceof WahrheitswertContext) {
 				zwischenCode.add("LADE "+ctx.getChild(i).getText());
-			} else if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE) {
-				zwischenCode.add("LEGE R" +Integer.toString(requireVariableIndex(typeNode.getSymbol())));
+			} else if (ctx.getChild(i) instanceof VariableContext) {
+				VariableContext varctx = (VariableContext) ctx.getChild(i);
+				
+				zwischenCode.add("LEGE R" +Integer.toString(requireVariableIndex(((TerminalNode)varctx.getChild(0)).getSymbol())));
 			}
 		}
 	}
