@@ -111,8 +111,8 @@ public class AbstrakteKellerMaschine
 
 	private void goTo(String l){
 		for (int i = 0; i < machineCode.size();i++) {
-			if(machineCode.get(i).equals("LABEL " + l)){
-				pointer = i+1;
+			if(machineCode.get(i).equals("MARKIERUNG " + l)){
+				pointer = i;
 				break;
 			}
 		}
@@ -142,7 +142,7 @@ public class AbstrakteKellerMaschine
 	}
 
 	private void execute(String command) {
-		if (command.startsWith("LADE") || command.startsWith("LEGE L")) {
+		if (command.startsWith("LADE") || command.startsWith("LEGE M")) {
 			load(command.substring(command.indexOf(' ') + 1));
 		} else if (command.equals("ADD")) {
 			add();
