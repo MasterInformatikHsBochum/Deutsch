@@ -12,8 +12,8 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class Einstiegspunkt {
     public static void main(String[] args) throws IOException {
-       // ANTLRFileStream inputFileStream = new ANTLRFileStream(args[0], "utf-8");
-        ANTLRFileStream inputFileStream = new ANTLRFileStream("Beispiele/Addition_Beispiel_mit_Variable.deutsch", "utf-8");
+        ANTLRFileStream inputFileStream = new ANTLRFileStream(args[0], "utf-8");
+//        ANTLRFileStream inputFileStream = new ANTLRFileStream("Beispiele/Addition_Beispiel_mit_Variable.deutsch", "utf-8");
         System.out.println("Eingabe: " + inputFileStream.toString());
 
         DeutschLexer lexer = new DeutschLexer(inputFileStream);
@@ -22,19 +22,13 @@ public class Einstiegspunkt {
         DeutschParser parser = new DeutschParser(tokens);
         ParseTree tree = parser.programm();
 
-
-        Codegenerierung generator = new Codegenerierung();
-        ParseTreeWalker läufer = new ParseTreeWalker();
-        läufer.walk(generator, tree);
-
-        AbstrakteKellerMaschine abstrakteKellerMaschine = new AbstrakteKellerMaschine();
-        abstrakteKellerMaschine.setDebug(true);
-        abstrakteKellerMaschine.parseCode(new File("zwischencode.txt"));
-
-        System.out.println("mache jetzt geilen stuff");
-        TreeViewer viewer = new TreeViewer(Arrays.asList(
-                parser.getRuleNames()), tree);
-
+//        Codegenerierung generator = new Codegenerierung();
+//        ParseTreeWalker läufer = new ParseTreeWalker();
+//        läufer.walk(generator, tree);
+//
+//        AbstrakteKellerMaschine abstrakteKellerMaschine = new AbstrakteKellerMaschine();
+//        abstrakteKellerMaschine.setDebug(true);
+//        abstrakteKellerMaschine.parseCode(new File("zwischencode.txt"));
 
         AbstrakterSyntaxbaum abstrakterSyntaxbaum = new AbstrakterSyntaxbaum(
         Arrays.asList(parser.getRuleNames()), tree);
