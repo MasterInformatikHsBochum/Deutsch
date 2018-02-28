@@ -21,6 +21,7 @@ import de.hochschule_bochum.DeutschParser.AusgabeContext;
 import de.hochschule_bochum.DeutschParser.BedingteAnweisungContext;
 import de.hochschule_bochum.DeutschParser.DivisionContext;
 import de.hochschule_bochum.DeutschParser.MultiplikationContext;
+import de.hochschule_bochum.DeutschParser.OperatorContext;
 import de.hochschule_bochum.DeutschParser.ProgrammContext;
 import de.hochschule_bochum.DeutschParser.SubtraktionContext;
 import de.hochschule_bochum.DeutschParser.VariableContext;
@@ -71,7 +72,6 @@ public class Codegenerierung extends DeutschBaseListener {
 			if (ctx.getChild(i) instanceof ZahlContext)
 			{
 				ZahlContext zahlctx = (ZahlContext) ctx.getChild(i);
-//				zwischenCode.add("LADE " + typeNode.getText());
 				zwischenCode.add("LADE " + zahlctx.getChild(0).getText());
 			}
 		}
@@ -106,14 +106,19 @@ public class Codegenerierung extends DeutschBaseListener {
 		}
 		return varIndex;
 	}
+	@Override
+	public void enterWahrheitswert(WahrheitswertContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterWahrheitswert(ctx);
+	}
 
 	@Override
 	public void enterBedingteAnweisung(BedingteAnweisungContext ctx) {
+		lade(ctx);
 		for (int i = 0; i < ctx.getChildCount(); i++) {
-			if (ctx.getChild(i) instanceof TerminalNode) {
-				TerminalNode typeNode = (TerminalNode) ctx.getChild(i);
-				if (typeNode.getSymbol().getType() == DeutschLexer.OPERATOR) {
-					switch (typeNode.getText()) {
+			if (ctx.getChild(i) instanceof OperatorContext) {
+				TerminalNode operator = (TerminalNode) ctx.getChild(i).getChild(0);
+					switch (operator.getText()) {
 					case "größer":
 
 						break;
@@ -127,7 +132,7 @@ public class Codegenerierung extends DeutschBaseListener {
 
 						break;
 					case "kleiner":
-
+						
 						break;
 					case "und":
 
@@ -138,15 +143,8 @@ public class Codegenerierung extends DeutschBaseListener {
 					default:
 						break;
 					}
-				} else if (typeNode.getSymbol().getType() == DeutschLexer.ZAHL
-						|| typeNode.getSymbol().getType() == DeutschLexer.WAHRHEITSWERT) {
-					zwischenCode.add(typeNode.getText());
-				} else if (typeNode.getSymbol().getType() == DeutschLexer.VARIABLE) {
-					zwischenCode.add(Integer.toString(variablen.get(typeNode.getText())));
-				}
+				} 
 			}
-		}
-
 		super.enterBedingteAnweisung(ctx);
 	}
 
@@ -171,7 +169,6 @@ public class Codegenerierung extends DeutschBaseListener {
 
 
 	private void speicher(ParserRuleContext ctx, int pos){
-//			TerminalNode typeNode = (TerminalNode) ctx.getChild(pos);
 			if (ctx.getChild(pos) instanceof VariableContext || ctx.getChild(pos) instanceof ZeichenketteContext)
 			{
 				zwischenCode.add("AUSKELLERN R" + Integer.toString(requireVariableIndex(((TerminalNode)ctx.getChild(pos).getChild(0)).getSymbol())));
@@ -181,12 +178,10 @@ public class Codegenerierung extends DeutschBaseListener {
 	private void lade(ParserRuleContext ctx)
 	{
 		for (int i = 0; i < ctx.getChildCount(); i++) {
-//			TerminalNode typeNode = (TerminalNode) ctx.getChild(i);
 			if (ctx.getChild(i) instanceof ZahlContext || ctx.getChild(i) instanceof WahrheitswertContext) {
 				zwischenCode.add("LADE "+ctx.getChild(i).getText());
 			} else if (ctx.getChild(i) instanceof VariableContext) {
 				VariableContext varctx = (VariableContext) ctx.getChild(i);
-				
 				zwischenCode.add("LEGE R" +Integer.toString(requireVariableIndex(((TerminalNode)varctx.getChild(0)).getSymbol())));
 			}
 		}
