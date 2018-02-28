@@ -28,36 +28,6 @@ public interface DeutschListener extends ParseTreeListener {
 	 */
 	void exitAnweisung(DeutschParser.AnweisungContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DeutschParser#variable}.
-	 * @param ctx the parse tree
-	 */
-	void enterVariable(DeutschParser.VariableContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DeutschParser#variable}.
-	 * @param ctx the parse tree
-	 */
-	void exitVariable(DeutschParser.VariableContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link DeutschParser#zahl}.
-	 * @param ctx the parse tree
-	 */
-	void enterZahl(DeutschParser.ZahlContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DeutschParser#zahl}.
-	 * @param ctx the parse tree
-	 */
-	void exitZahl(DeutschParser.ZahlContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link DeutschParser#wahrheitswert}.
-	 * @param ctx the parse tree
-	 */
-	void enterWahrheitswert(DeutschParser.WahrheitswertContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DeutschParser#wahrheitswert}.
-	 * @param ctx the parse tree
-	 */
-	void exitWahrheitswert(DeutschParser.WahrheitswertContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link DeutschParser#zeichenkette}.
 	 * @param ctx the parse tree
 	 */
@@ -67,16 +37,6 @@ public interface DeutschListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitZeichenkette(DeutschParser.ZeichenketteContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link DeutschParser#operator}.
-	 * @param ctx the parse tree
-	 */
-	void enterOperator(DeutschParser.OperatorContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DeutschParser#operator}.
-	 * @param ctx the parse tree
-	 */
-	void exitOperator(DeutschParser.OperatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DeutschParser#zuweisung}.
 	 * @param ctx the parse tree
