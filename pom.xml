@@ -27,10 +27,10 @@
                       <goal>copy-resources</goal>
                     </goals>
                     <configuration>
-                      <outputDirectory>${basedir}/Kompilate</outputDirectory>
+                      <outputDirectory>${basedir}/Kompilate/Beispiele</outputDirectory>
                       <resources>          
                         <resource>
-                          <directory>Ressource</directory>
+                          <directory>Beispiele</directory>
                           <filtering>true</filtering>
                         </resource>
                       </resources>              
