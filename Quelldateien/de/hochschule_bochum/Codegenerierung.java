@@ -41,9 +41,9 @@ public class Codegenerierung extends DeutschBaseListener {
 	private int markierungsCounter = 0;
 	private int wiederholungRuecksprungCounter = 0;
 	private int taetigkeitsCounter = 0;
-
-	public Codegenerierung() {
-
+	String pathToSave = "";
+	public Codegenerierung(String pathToSave) {
+		this.pathToSave = pathToSave;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class Codegenerierung extends DeutschBaseListener {
 	@Override
 	public void exitProgramm(ProgrammContext ctx) {
 		System.out.println("Beende Programm");
-		new File("zwischencode.txt");
+		new File(pathToSave +"zwischencode.txt");
 		Path pathToFile = Paths.get("zwischencode.txt");
 		try {
 			Files.write(pathToFile, zwischenCode, Charset.forName("UTF-8"));
