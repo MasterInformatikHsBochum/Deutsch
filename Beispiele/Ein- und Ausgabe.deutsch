@@ -1,5 +1,7 @@
 Von Anfang
     Erschaffe a und weise 0 zu.
+	Gebe "Gebe etwas ein:\n" aus.
     Gebe Wert für a ein:
+	Gebe "Eingabe: " aus.
     Gebe a aus.
 bis Ende.
