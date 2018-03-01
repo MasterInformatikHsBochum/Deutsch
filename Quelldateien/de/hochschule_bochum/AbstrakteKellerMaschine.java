@@ -8,7 +8,11 @@ import java.util.Stack;
 
 public class AbstrakteKellerMaschine
 {
+<<<<<<< HEAD
 	public static final int REGISTER_SIZE = 8;
+=======
+	public static int REGISTER_SIZE = 32;
+>>>>>>> f9209d68390cbc2eb54da8d456f010c876981423
 	private Stack<Object> stack;
 	private ArrayList<String> machineCode = new ArrayList<String>();
 	private Object[] register = new Object[REGISTER_SIZE];
