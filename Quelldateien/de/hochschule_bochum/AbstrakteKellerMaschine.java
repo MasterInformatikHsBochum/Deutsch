@@ -29,7 +29,7 @@ public class AbstrakteKellerMaschine
 			while ((line = reader.readLine()) != null) {
 				machineCode.add(line);
 			}
-			while(pointer < machineCode.size()-1) {
+			while(pointer < machineCode.size()) {
 				execute(machineCode.get(pointer));
 				pointer++;
 			}
@@ -185,9 +185,9 @@ public class AbstrakteKellerMaschine
 			moveR(Integer.parseInt(command.substring(command.lastIndexOf('R') + 1)));
 		} else if (command.equals("EIN")) {
 			in();
-		} if (command.equals("AUS")) {
+		} else if (command.equals("AUS")) {
 			out();
-		} 
+		}
 		if(debug)
 		{
 			String registereintraege = "";
@@ -197,8 +197,9 @@ public class AbstrakteKellerMaschine
 				{
 					registereintraege += ", R" + i + ":" + register[i];
 				}
-				debugInfo += "Kommando: " + command + " Stapel: " + stack.toString() + registereintraege + "\n";
 			}
+			debugInfo += "Kommando: " + command + " Stapel: " + stack.toString() + registereintraege + "\n";
+
 		}
 	}
 
@@ -220,12 +221,12 @@ public class AbstrakteKellerMaschine
 	{
 		stack.pop();
 	}
-	
+
 	private void out() {
 		String output = stack.pop() + "";
 		System.out.print(output);
 	}
-	
+
 	private void in() {
 		String input = System.console().readLine();
 		try
