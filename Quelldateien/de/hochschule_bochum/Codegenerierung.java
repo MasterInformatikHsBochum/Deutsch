@@ -37,10 +37,7 @@ import de.hochschule_bochum.DeutschParser.ZuweisungContext;
 public class Codegenerierung extends DeutschBaseListener {
 	private List<String> zwischenCode = new ArrayList<String>();
 	private Map<String, Integer> variablen = new HashMap<>();
-	private int wiederholungsCounter = 0;
 	private int markierungsCounter = 0;
-	private int wiederholungRuecksprungCounter = 0;
-	private int currentAmountWiederholung = 0;
 	private int taetigkeitsCounter = 0;
 	private String pathToSave = "";
 	private boolean debug = true;
@@ -68,8 +65,7 @@ public class Codegenerierung extends DeutschBaseListener {
 	public void exitProgramm(ProgrammContext ctx) {
 		if (this.debug) {
 			System.out.println("Beende Programm");
-		}
-
+		}		
 		Path pathToFile = Paths.get(this.pathToSave);
 		try {
 			Files.write(pathToFile, zwischenCode, Charset.forName("UTF-8"));
@@ -265,7 +261,7 @@ public class Codegenerierung extends DeutschBaseListener {
 
 	@Override
 	public void exitWiederholung(WiederholungContext ctx) {		
-		zwischenCode.add("MARKIERUNG M" + ctx.hashCode()  + "PreJump");
+		zwischenCode.add("MARKIERUNG " + ctx.hashCode()  + "PreJump");
 
 		for (int i = 0; i < ctx.getChildCount(); i++) {
 			if (ctx.getChild(i) instanceof OperatorContext) {
@@ -334,14 +330,13 @@ public class Codegenerierung extends DeutschBaseListener {
 	@Override
 	public void enterAusgabe(AusgabeContext ctx) {
 		lade(ctx, 1);
-		zwischenCode.add("AUS ");
+		zwischenCode.add("AUS");
 		super.enterAusgabe(ctx);
 	}
 
 	@Override
 	public void enterEingabe(EingabeContext ctx) {
 		zwischenCode.add("EIN");
-		lade(ctx,1);
 		speicher(ctx, 1);
 		super.enterEingabe(ctx);
 	}
@@ -362,7 +357,7 @@ public class Codegenerierung extends DeutschBaseListener {
 	}
 
 	private void lade(ParserRuleContext ctx, int pos) {
-		if (ctx.getChild(pos) instanceof ZahlContext || ctx.getChild(pos) instanceof WahrheitswertContext) {
+		if (ctx.getChild(pos) instanceof ZahlContext || ctx.getChild(pos) instanceof WahrheitswertContext || ctx.getChild(pos) instanceof ZeichenketteContext ) {
 			zwischenCode.add("LADE " + ctx.getChild(pos).getText());
 		} else if (ctx.getChild(pos) instanceof VariableContext) {
 			VariableContext varctx = (VariableContext) ctx.getChild(pos);
