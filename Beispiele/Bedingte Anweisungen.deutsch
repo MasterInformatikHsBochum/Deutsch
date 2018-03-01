@@ -3,7 +3,9 @@ Von Anfang
     Erschaffe b und weise 0 zu.
 
     Falls a größer 0 dann Gebe "Fabelhaft" aus. Anweisungsende.
-    Falls a größer 0 dann Gebe "Fabelhaft" aus. sonst Gebe "gut" aus. Anweisungsende.
+    Kommentar:
+        Falls a größer 0 dann Gebe "Fabelhaft" aus. sonst Gebe "gut" aus. Anweisungsende.
+    Kommentar Ende.
 
     Falls a größer 0 dann
         Gebe "Fabelhaft" aus.
@@ -11,8 +13,6 @@ Von Anfang
 
     Falls b größer 0 dann
         Gebe "größer" aus.
-    sonst
-        Gebe "kleiner" aus.
     Anweisungsende.
 
     Kommentar:

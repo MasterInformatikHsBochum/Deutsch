@@ -66,8 +66,7 @@ division
     ;
 
 bedingteAnweisung
-    :   'Falls' (zahl | variable | wahrheitswert) operator (zahl | variable | wahrheitswert) 'dann' (anweisung)+ 'sonst' (anweisung)+ 'Anweisungsende.'
-    |   'Falls' (zahl | variable | wahrheitswert) operator (zahl | variable | wahrheitswert) 'dann' (anweisung)+ 'Anweisungsende.'
+    :   'Falls' (zahl | variable | wahrheitswert) operator (zahl | variable | wahrheitswert) 'dann' anweisung+? 'Anweisungsende.'
     ;
 
 wiederholung

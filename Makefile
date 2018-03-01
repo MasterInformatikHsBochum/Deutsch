@@ -13,8 +13,6 @@ Deutsch:
 Test:
 	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Leeres Programm.deutsch" && \
 	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Hallo Welt.deutsch" && \
-	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Ein- und Ausgabe.deutsch" && \
-	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Arithmetik.deutsch" && \
 	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Kommentare.deutsch" && \
 	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Bedingte Anweisungen.deutsch" && \
 	java -jar Kompilate/Deutsch-Alpha-jar-with-dependencies.jar "Beispiele/Wiederholungen.deutsch"
