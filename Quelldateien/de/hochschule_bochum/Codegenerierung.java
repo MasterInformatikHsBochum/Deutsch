@@ -37,8 +37,6 @@ import de.hochschule_bochum.DeutschParser.ZuweisungContext;
 public class Codegenerierung extends DeutschBaseListener {
 	private List<String> zwischenCode = new ArrayList<String>();
 	private Map<String, Integer> variablen = new HashMap<>();
-	private int markierungsCounter = 0;
-	private int taetigkeitsCounter = 0;
 	private String pathToSave = "";
 	private boolean debug = true;
 
@@ -90,7 +88,8 @@ public class Codegenerierung extends DeutschBaseListener {
 		for (int i = 0; i < ctx.getChildCount(); i++) {
 			if (ctx.getChild(i) instanceof ZahlContext) {
 				zwischenCode.add("LADE " + ((TerminalNode) ctx.getChild(i).getChild(0)).getSymbol().getText());
-			} else if (ctx.getChild(i) instanceof VariableContext && ctx.getChild(i-1).getText().trim().equals("und weise")) {
+			} else if (ctx.getChild(i) instanceof VariableContext
+					&& ctx.getChild(i - 1).getText().trim().equals("und weise")) {
 				System.out.println(ctx.getChild(i).getClass());
 				VariableContext varctx = (VariableContext) ctx.getChild(i);
 				zwischenCode.add("LEGE R"
@@ -108,17 +107,16 @@ public class Codegenerierung extends DeutschBaseListener {
 				}
 			}
 		}
-			if (ctx.getChild(1) instanceof VariableContext) {
-				VariableContext varctx = (VariableContext) ctx.getChild(1);
-				if (variablen.containsKey(varctx.getChild(0).getText())) {
-					zwischenCode.add("AUSKELLERN R" + variablen.get(varctx.getChild(0).getText()));
-				} else {
-					for (int r = 0; r < AbstrakteKellerMaschine.REGISTER_SIZE; r++) {
-						if (!variablen.containsValue(r)) {
-							variablen.put(varctx.getChild(0).getText(), r);
-							zwischenCode.add("AUSKELLERN R" + r);
-							break;
-						
+		if (ctx.getChild(1) instanceof VariableContext) {
+			VariableContext varctx = (VariableContext) ctx.getChild(1);
+			if (variablen.containsKey(varctx.getChild(0).getText())) {
+				zwischenCode.add("AUSKELLERN R" + variablen.get(varctx.getChild(0).getText()));
+			} else {
+				for (int r = 0; r < AbstrakteKellerMaschine.REGISTER_SIZE; r++) {
+					if (!variablen.containsValue(r)) {
+						variablen.put(varctx.getChild(0).getText(), r);
+						zwischenCode.add("AUSKELLERN R" + r);
+						break;
 
 					}
 				}
@@ -129,7 +127,7 @@ public class Codegenerierung extends DeutschBaseListener {
 
 	@Override
 	public void enterTätigkeit(TätigkeitContext ctx) {
-		zwischenCode.add("GEHE " + taetigkeitsCounter + "Tätigkeitsende");
+		zwischenCode.add("GEHE " + ctx.hashCode() + "Tätigkeitsende");
 		zwischenCode.add("MARKIERUNG " + ctx.getChild(1).getText() + "Tätigkeit");
 
 		super.enterTätigkeit(ctx);
@@ -137,7 +135,7 @@ public class Codegenerierung extends DeutschBaseListener {
 
 	@Override
 	public void exitTätigkeit(TätigkeitContext ctx) {
-		zwischenCode.add("MARKIERUNG " + taetigkeitsCounter + "Tätigkeitsende");
+		zwischenCode.add("MARKIERUNG " + ctx.hashCode() + "Tätigkeitsende");
 		super.exitTätigkeit(ctx);
 	}
 
