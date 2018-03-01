@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.io.Console;
 
 public class AbstrakteKellerMaschine
 {
@@ -166,7 +167,11 @@ public class AbstrakteKellerMaschine
 			pop(Integer.parseInt(command.substring(command.lastIndexOf('R') + 1)));
 		} else if (command.startsWith("LEGE R")) {
 			moveR(Integer.parseInt(command.substring(command.lastIndexOf('R') + 1)));
-		}
+		} else if (command.equals("EIN")) {
+			in();
+		} if (command.equals("AUS")) {
+			out();
+		} 
 		if(debug)
 		{
 			String registereintraege = "";
@@ -196,6 +201,23 @@ public class AbstrakteKellerMaschine
 	private void pop()
 	{
 		stack.pop();
+	}
+	
+	private void out() {
+		String output = stack.pop() + "";
+		System.out.print(output)
+	}
+	
+	private void in() {
+		String input = System.console().readLine();
+		try
+		{
+			int zahl = 0;
+			zahl = Integer.parseInt(input);
+			stack.push(zahl);
+		} catch (NumberFormatException e) {
+			stack.push(input);
+		}
 	}
 
 	public void setDebug(boolean debug)
