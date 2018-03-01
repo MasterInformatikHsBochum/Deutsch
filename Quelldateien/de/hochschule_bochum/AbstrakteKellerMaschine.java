@@ -205,7 +205,7 @@ public class AbstrakteKellerMaschine
 	
 	private void out() {
 		String output = stack.pop() + "";
-		System.out.print(output)
+		System.out.print(output);
 	}
 	
 	private void in() {

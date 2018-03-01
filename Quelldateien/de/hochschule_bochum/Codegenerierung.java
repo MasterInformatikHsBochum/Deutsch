@@ -40,6 +40,7 @@ public class Codegenerierung extends DeutschBaseListener {
 	private int wiederholungsCounter = 0;
 	private int markierungsCounter = 0;
 	private int wiederholungRuecksprungCounter = 0;
+	private int currentAmountWiederholung = 0;
 	private int taetigkeitsCounter = 0;
 	String pathToSave = "";
 	public Codegenerierung(String pathToSave) {
@@ -66,8 +67,6 @@ public class Codegenerierung extends DeutschBaseListener {
 		}
 		super.exitProgramm(ctx);
 	}
-
-	private int testZähler = 0;
 
 	@Override
 	public void enterAnweisung(AnweisungContext ctx) {
@@ -247,19 +246,15 @@ public class Codegenerierung extends DeutschBaseListener {
 
 	@Override
 	public void enterWiederholung(WiederholungContext ctx) {
-		wiederholungRuecksprungCounter++;
-		zwischenCode.add("GEHEZU " + wiederholungRuecksprungCounter + "PreJump");
-		wiederholungsCounter++;
-		zwischenCode.add("MARKIERUNG " + wiederholungsCounter);
+		zwischenCode.add("GEHEZU " + ctx.hashCode() + "PreJump");
+		zwischenCode.add("MARKIERUNG M" + ctx.hashCode() );
 		super.enterWiederholung(ctx);
 	}
 
 	@Override
-	public void exitWiederholung(WiederholungContext ctx) {
-		zwischenCode.add("MARKIERUNG " + wiederholungRuecksprungCounter + "PreJump");
-		if (wiederholungRuecksprungCounter >= 0) {
-			wiederholungRuecksprungCounter--;
-		}
+	public void exitWiederholung(WiederholungContext ctx) {		
+		zwischenCode.add("MARKIERUNG M" + ctx.hashCode()  + "PreJump");
+
 		for (int i = 0; i < ctx.getChildCount(); i++) {
 			if (ctx.getChild(i) instanceof OperatorContext) {
 				TerminalNode operator = (TerminalNode) ctx.getChild(i).getChild(0);
@@ -268,7 +263,7 @@ public class Codegenerierung extends DeutschBaseListener {
 					lade(ctx, 3);
 					lade(ctx, 1);
 					zwischenCode.add("SUB");
-					zwischenCode.add("GEHEWAHR M" + wiederholungsCounter);
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode() );
 					break;
 				case "größer gleich":
 					lade(ctx, 3);
@@ -277,12 +272,12 @@ public class Codegenerierung extends DeutschBaseListener {
 					zwischenSpeichern();
 					zwischenLaden("PlaceHolder");
 					zwischenLaden("PlaceHolder");
-					zwischenCode.add("GEHEWAHR M" + wiederholungsCounter);
-					zwischenCode.add("GEHEFALSCH M" + wiederholungsCounter);
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode() );
+					zwischenCode.add("GEHEFALSCH M" + ctx.hashCode() );
 					break;
 				case "gleich":
 					zwischenCode.add("SUB");
-					zwischenCode.add("GEHEFALSCH M" + wiederholungsCounter);
+					zwischenCode.add("GEHEFALSCH M" + ctx.hashCode() );
 					break;
 				case "kleiner gleich":
 					lade(ctx, 1);
@@ -291,14 +286,14 @@ public class Codegenerierung extends DeutschBaseListener {
 					zwischenSpeichern();
 					zwischenLaden("PlaceHolder");
 					zwischenLaden("PlaceHolder");
-					zwischenCode.add("GEHEWAHR M" + wiederholungsCounter);
-					zwischenCode.add("GEHEFALSCH M" + wiederholungsCounter);
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode() );
+					zwischenCode.add("GEHEFALSCH M" + ctx.hashCode() );
 					break;
 				case "kleiner":
 					lade(ctx, 1);
 					lade(ctx, 3);
 					zwischenCode.add("SUB");
-					zwischenCode.add("GEHEWAHR M" + wiederholungsCounter);
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode() );
 					break;
 				case "und":
 
@@ -312,9 +307,6 @@ public class Codegenerierung extends DeutschBaseListener {
 				}
 			}
 
-		}
-		if (wiederholungsCounter >= 0) {
-			wiederholungsCounter--;
 		}
 		super.exitWiederholung(ctx);
 	}
