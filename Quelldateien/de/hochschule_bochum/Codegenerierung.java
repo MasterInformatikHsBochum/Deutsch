@@ -65,7 +65,7 @@ public class Codegenerierung extends DeutschBaseListener {
 	public void exitProgramm(ProgrammContext ctx) {
 		if (this.debug) {
 			System.out.println("Beende Programm");
-		}		
+		}
 		Path pathToFile = Paths.get(this.pathToSave);
 		try {
 			Files.write(pathToFile, zwischenCode, Charset.forName("UTF-8"));
@@ -182,10 +182,6 @@ public class Codegenerierung extends DeutschBaseListener {
 	@Override
 	public void enterBedingteAnweisung(BedingteAnweisungContext ctx) {
 
-		/*
-		 * GOTO -> überspringe false Markierung X : do stuff am ende Jump out
-		 */
-
 		for (int i = 0; i < ctx.getChildCount(); i++) {
 			if (ctx.getChild(i) instanceof OperatorContext) {
 				TerminalNode operator = (TerminalNode) ctx.getChild(i).getChild(0);
@@ -194,7 +190,7 @@ public class Codegenerierung extends DeutschBaseListener {
 					lade(ctx, 3);
 					lade(ctx, 1);
 					zwischenCode.add("SUB");
-					zwischenCode.add("GEHEWAHR M" + markierungsCounter);
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode());
 					break;
 				case "größer gleich":
 					lade(ctx, 3);
@@ -203,12 +199,12 @@ public class Codegenerierung extends DeutschBaseListener {
 					zwischenSpeichern();
 					zwischenLaden("PlaceHolder");
 					zwischenLaden("PlaceHolder");
-					zwischenCode.add("GEHEWAHR M" + markierungsCounter);
-					zwischenCode.add("GEHEFALSCH M" + markierungsCounter);
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode());
+					zwischenCode.add("GEHEFALSCH M" + ctx.hashCode());
 					break;
 				case "gleich":
 					zwischenCode.add("SUB");
-					zwischenCode.add("GEHEFALSCH M" + markierungsCounter);
+					zwischenCode.add("GEHEFALSCH M" + ctx.hashCode());
 					break;
 				case "kleiner gleich":
 					lade(ctx, 1);
@@ -217,14 +213,14 @@ public class Codegenerierung extends DeutschBaseListener {
 					zwischenSpeichern();
 					zwischenLaden("PlaceHolder");
 					zwischenLaden("PlaceHolder");
-					zwischenCode.add("GEHEWAHR M" + markierungsCounter);
-					zwischenCode.add("GEHEFALSCH M" + markierungsCounter);
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode());
+					zwischenCode.add("GEHEFALSCH M" + ctx.hashCode());
 					break;
 				case "kleiner":
 					lade(ctx, 1);
 					lade(ctx, 3);
 					zwischenCode.add("SUB");
-					zwischenCode.add("GEHEWAHR M" + markierungsCounter);
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode());
 					break;
 				case "und":
 
@@ -236,9 +232,8 @@ public class Codegenerierung extends DeutschBaseListener {
 					System.out.println("default");
 					break;
 				}
-				zwischenCode.add("GOTO M" + markierungsCounter + "-FALSE");
-				zwischenCode.add("MARKIERUNG M" + markierungsCounter);
-				markierungsCounter++;
+				zwischenCode.add("GEHEZU " + ctx.hashCode() + "ENDE");
+				zwischenCode.add("MARKIERUNG M" + ctx.hashCode());
 			}
 
 		}
@@ -323,7 +318,7 @@ public class Codegenerierung extends DeutschBaseListener {
 
 	@Override
 	public void exitBedingteAnweisung(BedingteAnweisungContext ctx) {
-		zwischenCode.add("MARKIERUNG ENDE");
+		zwischenCode.add("MARKIERUNG "+ ctx.hashCode() +"ENDE");
 		super.exitBedingteAnweisung(ctx);
 	}
 
@@ -357,13 +352,19 @@ public class Codegenerierung extends DeutschBaseListener {
 	}
 
 	private void lade(ParserRuleContext ctx, int pos) {
-		if (ctx.getChild(pos) instanceof ZahlContext || ctx.getChild(pos) instanceof WahrheitswertContext || ctx.getChild(pos) instanceof ZeichenketteContext ) {
-			zwischenCode.add("LADE " + ctx.getChild(pos).getText());
+		if (ctx.getChild(pos) instanceof ZahlContext || ctx.getChild(pos) instanceof WahrheitswertContext) {
+			zwischenCode.add("LADE " + ((TerminalNode)ctx.getChild(pos).getChild(0)).getSymbol().getText());
 		} else if (ctx.getChild(pos) instanceof VariableContext) {
 			VariableContext varctx = (VariableContext) ctx.getChild(pos);
 			zwischenCode.add(
 					"LEGE R" + Integer.toString(requireVariableIndex(((TerminalNode) varctx.getChild(0)).getSymbol())));
 
+		} else if (ctx.getChild(pos) instanceof ZeichenketteContext ) {
+			
+			String zeichenKette = ((TerminalNode)ctx.getChild(pos).getChild(0)).getSymbol()
+					.getText();
+			zeichenKette = zeichenKette.substring(zeichenKette.indexOf("\"")+1, zeichenKette.lastIndexOf("\""));
+			zwischenCode.add("LADE " + zeichenKette);
 		}
 	}
 

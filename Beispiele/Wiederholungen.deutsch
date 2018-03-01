@@ -3,8 +3,5 @@ Von Anfang
     Solange a kleiner 10
         Gebe "Ausgezeichnet" aus.
         Füge 1 zu a hinzu.
-        Solange a größer 0
-        	Füge 1 zu a hinzu.
-        Wiederholungsende.
     Wiederholungsende.
 bis Ende.

@@ -1,4 +1,5 @@
 Von Anfang
 	Erschaffe b und weise 10 zu.
-	Falls 10 kleiner 20 dann Füge 3 zu b hinzu. sonst Füge 5 zu b hinzu. Anweisungsende.
+	Falls 19 kleiner gleich 20 dann Füge 3 zu b hinzu. Gebe b aus. Anweisungsende.
+	Gebe b aus.
 bis Ende.
