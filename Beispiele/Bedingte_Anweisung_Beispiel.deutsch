@@ -1,3 +1,4 @@
 Von Anfang
-	Falls 10 kleiner 20 dann Gebe "Fabelhaft" aus.
+	Erschaffe b und weise 10 zu.
+	Falls 10 kleiner 20 dann Füge 3 zu b hinzu. sonst Füge 5 zu b hinzu. Anweisungsende.
 bis Ende.
