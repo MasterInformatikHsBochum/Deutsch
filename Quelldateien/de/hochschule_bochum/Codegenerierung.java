@@ -20,10 +20,13 @@ import de.hochschule_bochum.DeutschParser.AnweisungContext;
 import de.hochschule_bochum.DeutschParser.AusgabeContext;
 import de.hochschule_bochum.DeutschParser.BedingteAnweisungContext;
 import de.hochschule_bochum.DeutschParser.DivisionContext;
+import de.hochschule_bochum.DeutschParser.EingabeContext;
 import de.hochschule_bochum.DeutschParser.MultiplikationContext;
 import de.hochschule_bochum.DeutschParser.OperatorContext;
 import de.hochschule_bochum.DeutschParser.ProgrammContext;
 import de.hochschule_bochum.DeutschParser.SubtraktionContext;
+import de.hochschule_bochum.DeutschParser.TätigkeitContext;
+import de.hochschule_bochum.DeutschParser.TätigkeitsAufrufContext;
 import de.hochschule_bochum.DeutschParser.VariableContext;
 import de.hochschule_bochum.DeutschParser.WahrheitswertContext;
 import de.hochschule_bochum.DeutschParser.WiederholungContext;
@@ -37,6 +40,7 @@ public class Codegenerierung extends DeutschBaseListener {
 	private int wiederholungsCounter = 0;
 	private int markierungsCounter = 0;
 	private int wiederholungRuecksprungCounter = 0;
+	private int taetigkeitsCounter = 0;
 
 	public Codegenerierung() {
 
@@ -101,7 +105,39 @@ public class Codegenerierung extends DeutschBaseListener {
 		}
 		super.enterZuweisung(ctx);
 	}
+	
+	
+	@Override
+	public void enterTätigkeit(TätigkeitContext ctx) {
+		zwischenCode.add("GEHE " + taetigkeitsCounter+"Tätigkeitsende");
+		zwischenCode.add("MARKIERUNG " +ctx.getChild(1).getText()+ "Tätigkeit");
+		
+		super.enterTätigkeit(ctx);
+	}
+	@Override
+	public void exitTätigkeit(TätigkeitContext ctx) {
+		zwischenCode.add("MARKIERUNG "+ taetigkeitsCounter+"Tätigkeitsende");
+		super.exitTätigkeit(ctx);
+	}
+	@Override
+	public void enterTätigkeitsAufruf(TätigkeitsAufrufContext ctx) {
+		zwischenCode.add("GEHE "+ ctx.getChild(1).getText()+"Tätigkeit");
+		super.enterTätigkeitsAufruf(ctx);
+	}
 
+	@Override
+	public void enterVariable(VariableContext ctx) {
+		if(ctx.getParent() instanceof TätigkeitContext){
+			for (int r = 0; r < AbstrakteKellerMaschine.REGISTER_SIZE; r++) {
+				if (!variablen.containsValue(r)) {
+					variablen.put(ctx.getText(), r);
+					break;
+				}
+
+			}
+		}
+		super.enterVariable(ctx);
+	}
 	private int requireVariableIndex(Token varNameToken) {
 		Integer varIndex = variablen.get(varNameToken.getText());
 		if (varIndex == null) {
@@ -291,9 +327,18 @@ public class Codegenerierung extends DeutschBaseListener {
 
 	@Override
 	public void enterAusgabe(AusgabeContext ctx) {
+		lade(ctx, 1);
+		zwischenCode.add("AUS ");
 		super.enterAusgabe(ctx);
 	}
 
+	@Override
+	public void enterEingabe(EingabeContext ctx) {
+		zwischenCode.add("EIN");
+		lade(ctx,1);
+		speicher(ctx, 1);
+		super.enterEingabe(ctx);
+	}
 	@Override
 	public void enterAddition(AdditionContext ctx) {
 		lade(ctx, 1);
