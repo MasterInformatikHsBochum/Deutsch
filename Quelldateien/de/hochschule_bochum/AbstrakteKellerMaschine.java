@@ -226,13 +226,6 @@ public class AbstrakteKellerMaschine
 
 	private void out() {
 		String output = stack.pop() + "";
-
-		// " zu Beginn einer Zeichenkette entfernen
-		output = output.replaceFirst("^\"", "");
-
-		// " am Ende einer Zeichenkette entfernen
-		output = output.replaceFirst("\"$", "");
-
 		// Escapen rückgängig machen
 		output = StringEscapeUtils.unescapeJava(output);
 		System.out.print(output);
