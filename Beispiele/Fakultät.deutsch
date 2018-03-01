@@ -1,0 +1,15 @@
+Von Anfang
+    Erschaffe n und weise 0 zu.
+	Gebe "Gebe n ein:\n" aus.
+    Gebe Wert für n ein:
+	Erschaffe nt und weise 1 zu.
+	Füge n zu nt hinzu.
+	Erschaffe f und weise 1 zu.
+	Erschaffe i und weise 1 zu.
+	Solange i kleiner nt
+		Vervielfältige f um i.
+		Füge 1 zu i hinzu.
+	Wiederholungsende.
+	Gebe "n!=" aus.
+    Gebe f aus.
+bis Ende.
