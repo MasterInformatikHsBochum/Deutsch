@@ -1,11 +1,8 @@
 package de.hochschule_bochum;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Stack;
-import java.io.Console;
 
 public class AbstrakteKellerMaschine
 {
@@ -15,6 +12,7 @@ public class AbstrakteKellerMaschine
 	private Object[] register = new Object[REGISTER_SIZE];
 	int pointer = 0;
 	private boolean debug = false;
+	private String debugInfo = "";
 
 	public AbstrakteKellerMaschine() {
 		stack = new Stack<Object>();
@@ -22,7 +20,7 @@ public class AbstrakteKellerMaschine
 
 	public void parseCode(File code) {
 		if(debug) {
-			System.out.println("Abstrakte Kellermaschine: Debug-Information an.");
+			debugInfo += "Abstrakte Kellermaschine gestartet.\n";
 		}
 		try
 		{
@@ -36,7 +34,25 @@ public class AbstrakteKellerMaschine
 				pointer++;
 			}
 			if (debug) {
-				System.out.println("Abstrakte Kellermaschine beendet.");
+				debugInfo += "Abstrakte Kellermaschine beendet.\n";
+				BufferedWriter bufferedWriter = null;
+				try {
+					File debugLog = new File("Kellerdebug.log");
+					if (!debugLog.exists()) {
+						debugLog.createNewFile();
+					}
+					Writer writer = new FileWriter(debugLog);
+					bufferedWriter = new BufferedWriter(writer);
+					bufferedWriter.write(debugInfo);
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally{
+					try{
+						if(bufferedWriter != null) bufferedWriter.close();
+					} catch(Exception ex){
+
+					}
+				}
 			}
 		}
 		catch (java.io.IOException e)
@@ -175,12 +191,14 @@ public class AbstrakteKellerMaschine
 		if(debug)
 		{
 			String registereintraege = "";
-			for(int i = 0; i < register.length;i++) {
-				if (register[i] != null) {
-						registereintraege += ",R" + i + ":" + register[i];
+			for(int i = 0; i < register.length;i++)
+			{
+				if (register[i] != null)
+				{
+					registereintraege += ", R" + i + ":" + register[i];
 				}
+				debugInfo += "Kommando: " + command + " Stapel: " + stack.toString() + registereintraege + "\n";
 			}
-			System.out.println("Kommando:" + command + "Stapel:" + stack.toString() + registereintraege);
 		}
 	}
 
