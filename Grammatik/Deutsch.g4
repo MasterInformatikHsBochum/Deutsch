@@ -2,7 +2,6 @@ grammar Deutsch;
 
 programm
     :   'Von Anfang' (anweisung)* 'bis Ende.'
-    |   tätigkeit
     ;
 
 anweisung
