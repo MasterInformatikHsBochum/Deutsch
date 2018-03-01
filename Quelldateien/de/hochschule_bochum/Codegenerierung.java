@@ -35,30 +35,42 @@ import de.hochschule_bochum.DeutschParser.ZeichenketteContext;
 import de.hochschule_bochum.DeutschParser.ZuweisungContext;
 
 public class Codegenerierung extends DeutschBaseListener {
-	List<String> zwischenCode = new ArrayList<String>();
+	private List<String> zwischenCode = new ArrayList<String>();
 	private Map<String, Integer> variablen = new HashMap<>();
 	private int wiederholungsCounter = 0;
 	private int markierungsCounter = 0;
 	private int wiederholungRuecksprungCounter = 0;
 	private int currentAmountWiederholung = 0;
 	private int taetigkeitsCounter = 0;
-	String pathToSave = "";
+	private String pathToSave = "";
+	private boolean debug = true;
+
 	public Codegenerierung(String pathToSave) {
 		this.pathToSave = pathToSave;
 	}
 
+	public Codegenerierung(String pathToSave, boolean debug) {
+		this.pathToSave = pathToSave;
+		this.debug = debug;
+	}
+
 	@Override
 	public void enterProgramm(ProgrammContext ctx) {
-		System.out.println("starte Programm" + ctx);
-		System.out.println(ctx.toStringTree());
+		if (this.debug) {
+			System.out.println("starte Programm" + ctx);
+			System.out.println(ctx.toStringTree());
+		}
+
 		super.enterProgramm(ctx);
 	}
 
 	@Override
 	public void exitProgramm(ProgrammContext ctx) {
-		System.out.println("Beende Programm");
-		new File(pathToSave +"zwischencode.txt");
-		Path pathToFile = Paths.get("zwischencode.txt");
+		if (this.debug) {
+			System.out.println("Beende Programm");
+		}
+
+		Path pathToFile = Paths.get(this.pathToSave);
 		try {
 			Files.write(pathToFile, zwischenCode, Charset.forName("UTF-8"));
 		} catch (IOException e) {
@@ -302,7 +314,9 @@ public class Codegenerierung extends DeutschBaseListener {
 
 					break;
 				default:
-					System.out.println("default");
+					if (this.debug) {
+						System.out.println("default");
+					}
 					break;
 				}
 			}

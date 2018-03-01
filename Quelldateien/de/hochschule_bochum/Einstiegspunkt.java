@@ -12,7 +12,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 public class Einstiegspunkt {
     public static void main(String[] args) throws IOException {
 //        String eingabeDatei = args[0];
-        String eingabeDatei = "Beispiele/Wiederholungen.deutsch";
+        String eingabeDatei = "Beispiele/Ein- und Ausgabe.deutsch";
         ANTLRFileStream inputFileStream = new ANTLRFileStream(eingabeDatei, "utf-8");
 //        ANTLRFileStream inputFileStream = new ANTLRFileStream("Beispiele/Addition_Beispiel_mit_Variable.deutsch", "utf-8");
 //        System.out.println("Eingabe: " + inputFileStream.toString());
@@ -23,12 +23,12 @@ public class Einstiegspunkt {
         DeutschParser parser = new DeutschParser(tokens);
         ParseTree tree = parser.programm();
 
-        Codegenerierung generator = new Codegenerierung();
+        Codegenerierung generator = new Codegenerierung("");
         ParseTreeWalker läufer = new ParseTreeWalker();
         läufer.walk(generator, tree);
 
         AbstrakteKellerMaschine abstrakteKellerMaschine = new AbstrakteKellerMaschine();
-        abstrakteKellerMaschine.setDebug(true);
+//        abstrakteKellerMaschine.setDebug(true);
         abstrakteKellerMaschine.parseCode(new File("zwischencode.txt"));
 
         AbstrakterSyntaxbaum abstrakterSyntaxbaum = new AbstrakterSyntaxbaum(
