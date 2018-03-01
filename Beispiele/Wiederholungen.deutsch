@@ -1,7 +1,6 @@
 Von Anfang
-    Erschaffe a und weise 0 zu.
+    Erschaffe a und weise falsch zu.
     Solange a kleiner 10
-        Gebe "Ausgezeichnet" aus.
-        Füge 1 zu a hinzu.
+        Gebe a aus.
     Wiederholungsende.
 bis Ende.

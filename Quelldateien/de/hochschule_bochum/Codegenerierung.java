@@ -89,13 +89,27 @@ public class Codegenerierung extends DeutschBaseListener {
 	public void enterZuweisung(ZuweisungContext ctx) {
 		for (int i = 0; i < ctx.getChildCount(); i++) {
 			if (ctx.getChild(i) instanceof ZahlContext) {
-				ZahlContext zahlctx = (ZahlContext) ctx.getChild(i);
-				zwischenCode.add("LADE " + zahlctx.getChild(0).getText());
+				zwischenCode.add("LADE " + ((TerminalNode) ctx.getChild(i).getChild(0)).getSymbol().getText());
+			} else if (ctx.getChild(i) instanceof VariableContext && ctx.getChild(i-1).getText().trim().equals("und weise")) {
+				System.out.println(ctx.getChild(i).getClass());
+				VariableContext varctx = (VariableContext) ctx.getChild(i);
+				zwischenCode.add("LEGE R"
+						+ Integer.toString(requireVariableIndex(((TerminalNode) varctx.getChild(0)).getSymbol())));
+			} else if (ctx.getChild(i) instanceof ZeichenketteContext) {
+				String zeichenKette = ((TerminalNode) ctx.getChild(i).getChild(0)).getSymbol().getText();
+				zeichenKette = zeichenKette.substring(zeichenKette.indexOf("\"") + 1, zeichenKette.lastIndexOf("\""));
+				zwischenCode.add("LADE " + zeichenKette);
+			} else if (ctx.getChild(i) instanceof WahrheitswertContext) {
+				WahrheitswertContext warContext = (WahrheitswertContext) ctx.getChild(i);
+				if (warContext.getText().trim().equalsIgnoreCase("wahr")) {
+					zwischenCode.add("LADE " + 1);
+				} else if (warContext.getText().trim().equalsIgnoreCase("falsch")) {
+					zwischenCode.add("LADE " + 0);
+				}
 			}
 		}
-		for (int i = 0; i < ctx.getChildCount(); i++) {
-			if (ctx.getChild(i) instanceof VariableContext) {
-				VariableContext varctx = (VariableContext) ctx.getChild(i);
+			if (ctx.getChild(1) instanceof VariableContext) {
+				VariableContext varctx = (VariableContext) ctx.getChild(1);
 				if (variablen.containsKey(varctx.getChild(0).getText())) {
 					zwischenCode.add("AUSKELLERN R" + variablen.get(varctx.getChild(0).getText()));
 				} else {
@@ -104,7 +118,7 @@ public class Codegenerierung extends DeutschBaseListener {
 							variablen.put(varctx.getChild(0).getText(), r);
 							zwischenCode.add("AUSKELLERN R" + r);
 							break;
-						}
+						
 
 					}
 				}
@@ -112,29 +126,30 @@ public class Codegenerierung extends DeutschBaseListener {
 		}
 		super.enterZuweisung(ctx);
 	}
-	
-	
+
 	@Override
 	public void enterTätigkeit(TätigkeitContext ctx) {
-		zwischenCode.add("GEHE " + taetigkeitsCounter+"Tätigkeitsende");
-		zwischenCode.add("MARKIERUNG " +ctx.getChild(1).getText()+ "Tätigkeit");
-		
+		zwischenCode.add("GEHE " + taetigkeitsCounter + "Tätigkeitsende");
+		zwischenCode.add("MARKIERUNG " + ctx.getChild(1).getText() + "Tätigkeit");
+
 		super.enterTätigkeit(ctx);
 	}
+
 	@Override
 	public void exitTätigkeit(TätigkeitContext ctx) {
-		zwischenCode.add("MARKIERUNG "+ taetigkeitsCounter+"Tätigkeitsende");
+		zwischenCode.add("MARKIERUNG " + taetigkeitsCounter + "Tätigkeitsende");
 		super.exitTätigkeit(ctx);
 	}
+
 	@Override
 	public void enterTätigkeitsAufruf(TätigkeitsAufrufContext ctx) {
-		zwischenCode.add("GEHE "+ ctx.getChild(1).getText()+"Tätigkeit");
+		zwischenCode.add("GEHE " + ctx.getChild(1).getText() + "Tätigkeit");
 		super.enterTätigkeitsAufruf(ctx);
 	}
 
 	@Override
 	public void enterVariable(VariableContext ctx) {
-		if(ctx.getParent() instanceof TätigkeitContext){
+		if (ctx.getParent() instanceof TätigkeitContext) {
 			for (int r = 0; r < AbstrakteKellerMaschine.REGISTER_SIZE; r++) {
 				if (!variablen.containsValue(r)) {
 					variablen.put(ctx.getText(), r);
@@ -145,6 +160,7 @@ public class Codegenerierung extends DeutschBaseListener {
 		}
 		super.enterVariable(ctx);
 	}
+
 	private int requireVariableIndex(Token varNameToken) {
 		Integer varIndex = variablen.get(varNameToken.getText());
 		if (varIndex == null) {
@@ -223,10 +239,14 @@ public class Codegenerierung extends DeutschBaseListener {
 					zwischenCode.add("GEHEWAHR M" + ctx.hashCode());
 					break;
 				case "und":
-
+					lade(ctx, 1);
+					lade(ctx, 3);
+					zwischenCode.add("MUL");
 					break;
 				case "oder":
-
+					lade(ctx, 1);
+					lade(ctx, 3);
+					zwischenCode.add("ADD");
 					break;
 				default:
 					System.out.println("default");
@@ -237,26 +257,19 @@ public class Codegenerierung extends DeutschBaseListener {
 			}
 
 		}
-		/*
-		 * Zwischen Anweisung sonst >> GOTO ENDE MARKIERUNG M0-FALSE<< Anweisung
-		 * muss :
-		 * 
-		 * 
-		 */
-
 		super.enterBedingteAnweisung(ctx);
 	}
 
 	@Override
 	public void enterWiederholung(WiederholungContext ctx) {
 		zwischenCode.add("GEHEZU " + ctx.hashCode() + "PreJump");
-		zwischenCode.add("MARKIERUNG M" + ctx.hashCode() );
+		zwischenCode.add("MARKIERUNG M" + ctx.hashCode());
 		super.enterWiederholung(ctx);
 	}
 
 	@Override
-	public void exitWiederholung(WiederholungContext ctx) {		
-		zwischenCode.add("MARKIERUNG " + ctx.hashCode()  + "PreJump");
+	public void exitWiederholung(WiederholungContext ctx) {
+		zwischenCode.add("MARKIERUNG " + ctx.hashCode() + "PreJump");
 
 		for (int i = 0; i < ctx.getChildCount(); i++) {
 			if (ctx.getChild(i) instanceof OperatorContext) {
@@ -266,7 +279,7 @@ public class Codegenerierung extends DeutschBaseListener {
 					lade(ctx, 3);
 					lade(ctx, 1);
 					zwischenCode.add("SUB");
-					zwischenCode.add("GEHEWAHR M" + ctx.hashCode() );
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode());
 					break;
 				case "größer gleich":
 					lade(ctx, 3);
@@ -275,12 +288,12 @@ public class Codegenerierung extends DeutschBaseListener {
 					zwischenSpeichern();
 					zwischenLaden("PlaceHolder");
 					zwischenLaden("PlaceHolder");
-					zwischenCode.add("GEHEWAHR M" + ctx.hashCode() );
-					zwischenCode.add("GEHEFALSCH M" + ctx.hashCode() );
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode());
+					zwischenCode.add("GEHEFALSCH M" + ctx.hashCode());
 					break;
 				case "gleich":
 					zwischenCode.add("SUB");
-					zwischenCode.add("GEHEFALSCH M" + ctx.hashCode() );
+					zwischenCode.add("GEHEFALSCH M" + ctx.hashCode());
 					break;
 				case "kleiner gleich":
 					lade(ctx, 1);
@@ -289,20 +302,24 @@ public class Codegenerierung extends DeutschBaseListener {
 					zwischenSpeichern();
 					zwischenLaden("PlaceHolder");
 					zwischenLaden("PlaceHolder");
-					zwischenCode.add("GEHEWAHR M" + ctx.hashCode() );
-					zwischenCode.add("GEHEFALSCH M" + ctx.hashCode() );
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode());
+					zwischenCode.add("GEHEFALSCH M" + ctx.hashCode());
 					break;
 				case "kleiner":
 					lade(ctx, 1);
 					lade(ctx, 3);
 					zwischenCode.add("SUB");
-					zwischenCode.add("GEHEWAHR M" + ctx.hashCode() );
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode());
 					break;
 				case "und":
-
+					lade(ctx, 1);
+					lade(ctx, 3);
+					zwischenCode.add("MUL");
 					break;
 				case "oder":
-
+					lade(ctx, 1);
+					lade(ctx, 3);
+					zwischenCode.add("ADD");
 					break;
 				default:
 					if (this.debug) {
@@ -318,7 +335,7 @@ public class Codegenerierung extends DeutschBaseListener {
 
 	@Override
 	public void exitBedingteAnweisung(BedingteAnweisungContext ctx) {
-		zwischenCode.add("MARKIERUNG "+ ctx.hashCode() +"ENDE");
+		zwischenCode.add("MARKIERUNG " + ctx.hashCode() + "ENDE");
 		super.exitBedingteAnweisung(ctx);
 	}
 
@@ -335,6 +352,7 @@ public class Codegenerierung extends DeutschBaseListener {
 		speicher(ctx, 1);
 		super.enterEingabe(ctx);
 	}
+
 	@Override
 	public void enterAddition(AdditionContext ctx) {
 		lade(ctx, 1);
@@ -352,19 +370,25 @@ public class Codegenerierung extends DeutschBaseListener {
 	}
 
 	private void lade(ParserRuleContext ctx, int pos) {
-		if (ctx.getChild(pos) instanceof ZahlContext || ctx.getChild(pos) instanceof WahrheitswertContext) {
-			zwischenCode.add("LADE " + ((TerminalNode)ctx.getChild(pos).getChild(0)).getSymbol().getText());
+		if (ctx.getChild(pos) instanceof ZahlContext) {
+			zwischenCode.add("LADE " + ((TerminalNode) ctx.getChild(pos).getChild(0)).getSymbol().getText());
 		} else if (ctx.getChild(pos) instanceof VariableContext) {
 			VariableContext varctx = (VariableContext) ctx.getChild(pos);
 			zwischenCode.add(
 					"LEGE R" + Integer.toString(requireVariableIndex(((TerminalNode) varctx.getChild(0)).getSymbol())));
 
-		} else if (ctx.getChild(pos) instanceof ZeichenketteContext ) {
-			
-			String zeichenKette = ((TerminalNode)ctx.getChild(pos).getChild(0)).getSymbol()
-					.getText();
-			zeichenKette = zeichenKette.substring(zeichenKette.indexOf("\"")+1, zeichenKette.lastIndexOf("\""));
+		} else if (ctx.getChild(pos) instanceof ZeichenketteContext) {
+
+			String zeichenKette = ((TerminalNode) ctx.getChild(pos).getChild(0)).getSymbol().getText();
+			zeichenKette = zeichenKette.substring(zeichenKette.indexOf("\"") + 1, zeichenKette.lastIndexOf("\""));
 			zwischenCode.add("LADE " + zeichenKette);
+		} else if (ctx.getChild(pos) instanceof WahrheitswertContext) {
+			WahrheitswertContext warContext = (WahrheitswertContext) ctx.getChild(pos);
+			if (warContext.getText().trim().equalsIgnoreCase("wahr")) {
+				zwischenCode.add("LADE " + 1);
+			} else if (warContext.getText().trim().equalsIgnoreCase("falsch")) {
+				zwischenCode.add("LADE " + 0);
+			}
 		}
 	}
 
