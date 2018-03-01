@@ -1,0 +1,19 @@
+
+=squid:S1643"Use a StringBuilder instead.(ë’Áöûÿÿÿÿ8äæÖ‚,
+Ksquid:S1066"/Merge this if statement with the enclosing one.(˜½‘º8äæÖ‚,
+Ksquid:S1066"/Merge this if statement with the enclosing one.(˜½‘º8äæÖ‚,
+Ksquid:S1066"/Merge this if statement with the enclosing one.(˜½‘º8äæÖ‚,
+Ksquid:S1066"/Merge this if statement with the enclosing one.(Èøªƒ8äæÖ‚,
+usquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ø™—8äæÖ‚,
+zsquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ˆöéÅşÿÿÿÿ8äæÖ‚,
+Jsquid:S2095".Close this "FileReader" in a "finally" clause.(¬‘Æå8äæÖ‚,
+Y
+squid:S106"9Replace this use of System.out or System.err by a logger.(àÙ’ıÿÿÿÿ8äæÖ‚,
+Y
+squid:S106"9Replace this use of System.out or System.err by a logger.(´¦Å«ÿÿÿÿÿ8äæÖ‚,
+S
+squid:S106"9Replace this use of System.out or System.err by a logger.(Íõ•s8äæÖ‚,
+nsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(‘­¼ø8äæÖ‚,
+tsquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(ÎÇ—ë8äæÖ‚,
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8äæÖ‚,
+lsquid:S1149"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(äùè8äæÖ‚,
