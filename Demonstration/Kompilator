@@ -1,0 +1,3 @@
+#!/bin/bash
+# cp ../Kompilate/Kompilator.jar .
+java -jar ../Kompilate/Kompilator.jar "$@"

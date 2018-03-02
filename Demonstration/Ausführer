@@ -1,0 +1,3 @@
+#!/bin/bash
+# cp ../Kompilate/Ausführer.jar .
+java -jar ../Kompilate/Ausführer.jar "$@"
