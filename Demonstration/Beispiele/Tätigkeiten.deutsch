@@ -1,0 +1,26 @@
+Tätigkeitsbeschreibung von funktionEins:
+    Benötigt wird folgendes: a
+    Anweisungen:
+        Gebe "Der Wert von a ist " aus.
+        Gebe a aus.
+        Gebe ".\n" aus.
+Schließe Tätigkeit ab.
+
+Tätigkeitsbeschreibung von funktionZwei:
+    Benötigt wird folgendes: b
+    Anweisungen:
+        Gebe "Der Wert von b ist " aus.
+        Gebe b aus.
+        Gebe ".\n" aus.
+Schließe Tätigkeit ab.
+
+Von Anfang
+    Erschaffe a und weise 0 zu.
+    Führe Tätigkeit funktionEins mit a aus.
+
+    Erschaffe a und weise 5 zu.
+    Führe Tätigkeit funktionEins mit a aus.
+
+    Erschaffe b und weise 10 zu.
+    Führe Tätigkeit funktionZwei mit b aus.
+bis Ende.

@@ -30,6 +30,10 @@ HalloWelt:
 	@./Kompilator -i "Beispiele/Hallo Welt.deutsch" -o "Hallo Welt.kompiliert" -b -d && \
 	./Ausführer "Hallo Welt.kompiliert"
 
+Tätigkeiten:
+	@./Kompilator -i "Beispiele/Tätigkeiten.deutsch" -o "Tätigkeiten.kompiliert" -b -d && \
+	./Ausführer "Tätigkeiten.kompiliert"
+
 Wiederholungen:
 	@./Kompilator -i "Beispiele/Wiederholungen.deutsch" -o "Wiederholungen.kompiliert" -b -d && \
 	./Ausführer "Wiederholungen.kompiliert"

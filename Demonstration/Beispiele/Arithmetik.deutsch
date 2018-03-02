@@ -8,17 +8,18 @@ Von Anfang
     Gebe "\n" aus.
 
     Ziehe 3 von a ab.
-	Gebe "13 - 3 = " aus.
+    Gebe "13 - 3 = " aus.
     Gebe a aus.
-	Gebe "\n" aus.
+    Gebe "\n" aus.
 
     Erschaffe b und weise 5 zu.
     Vervielfältige a um b.
-	Gebe "10 * 5 = " aus.
+    Gebe "10 * 5 = " aus.
     Gebe a aus.
-	Gebe "\n" aus.
+    Gebe "\n" aus.
 
     Teile a durch b.
-	Gebe "50 / 5 = " aus.
+    Gebe "50 / 5 = " aus.
     Gebe a aus.
+    Gebe "\n" aus.
 bis Ende.
