@@ -161,48 +161,54 @@ public class AbstrakteKellerMaschine
 	}
 
 	private void execute(String command) {
-		if (command.startsWith("LADE") || command.startsWith("LEGE M")) {
-			load(command.substring(command.indexOf(' ') + 1));
-		} else if (command.equals("ADD")) {
-			add();
-		} else if (command.equals("SUB")) {
-			sub();
-		} else if (command.equals("MUL")) {
-			mul();
-		} else if (command.equals("DIV")) {
-			div();
-		} else if (command.startsWith("GEHEZU")) {
-			goTo(command.substring(command.indexOf(' ') + 1));
-		} else if (command.equals("GEHEZUSTAPEL")) {
-			goToStack();
-		} else if (command.startsWith("GEHEWAHR")) {
-			goTrue(command.substring(command.indexOf(' ') + 1));
-		} else if (command.startsWith("GEHEFALSCH")) {
-			goFalse(command.substring(command.indexOf(' ') + 1));
-		} else if (command.equals("AUSKELLERN")) {
-			pop();
-		} else if (command.startsWith("AUSKELLERN R")) {
-			pop(Integer.parseInt(command.substring(command.lastIndexOf('R') + 1)));
-		} else if (command.startsWith("LEGE R")) {
-			moveR(Integer.parseInt(command.substring(command.lastIndexOf('R') + 1)));
-		} else if (command.equals("EIN")) {
-			in();
-		} else if (command.equals("AUS")) {
-			out();
-		}
-		if(debug)
-		{
-			String registereintraege = "";
-			for(int i = 0; i < register.length;i++)
-			{
-				if (register[i] != null)
-				{
-					registereintraege += ", R" + i + ":" + register[i];
-				}
+		try {
+			if (command.startsWith("LADE") || command.startsWith("LEGE M")) {
+				load(command.substring(command.indexOf(' ') + 1));
+			} else if (command.equals("ADD")) {
+				add();
+			} else if (command.equals("SUB")) {
+				sub();
+			} else if (command.equals("MUL")) {
+				mul();
+			} else if (command.equals("DIV")) {
+				div();
+			}else if (command.equals("GEHEZUSTAPEL")) {
+				goToStack();
+			} else if (command.startsWith("GEHEZU")) {
+				goTo(command.substring(command.indexOf(' ') + 1));
+			}  else if (command.startsWith("GEHEWAHR")) {
+				goTrue(command.substring(command.indexOf(' ') + 1));
+			} else if (command.startsWith("GEHEFALSCH")) {
+				goFalse(command.substring(command.indexOf(' ') + 1));
+			} else if (command.equals("AUSKELLERN")) {
+				pop();
+			} else if (command.startsWith("AUSKELLERN R")) {
+				pop(Integer.parseInt(command.substring(command.lastIndexOf('R') + 1)));
+			} else if (command.startsWith("LEGE R")) {
+				moveR(Integer.parseInt(command.substring(command.lastIndexOf('R') + 1)));
+			} else if (command.equals("EIN")) {
+				in();
+			} else if (command.equals("AUS")) {
+				out();
 			}
-			debugInfo += "Kommando: " + command + " Stapel: " + stack.toString() + registereintraege + "\n";
+			if(debug)
+			{
+				String registereintraege = "";
+				for(int i = 0; i < register.length;i++)
+				{
+					if (register[i] != null)
+					{
+						registereintraege += ", R" + i + ":" + register[i];
+					}
+				}
+				debugInfo += "Kommando: " + command + " Stapel: " + stack.toString() + registereintraege + "\n";
 
+			}
+		}	 catch (Exception e) {
+			debugInfo += "Error: " + e.getMessage();
+			e.printStackTrace();
 		}
+
 	}
 
 	private void moveR(int r)

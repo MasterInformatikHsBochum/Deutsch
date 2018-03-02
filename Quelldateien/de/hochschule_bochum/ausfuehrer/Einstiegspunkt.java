@@ -24,6 +24,7 @@ public class Einstiegspunkt {
         }
 
         AbstrakteKellerMaschine abstrakteKellerMaschine = new AbstrakteKellerMaschine();
+        abstrakteKellerMaschine.setDebug(true);
         abstrakteKellerMaschine.parseCode(new File(eingabeDatei));
 
         return 0;

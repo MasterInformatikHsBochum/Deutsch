@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import de.hochschule_bochum.DeutschParser.AdditionContext;
@@ -37,9 +38,11 @@ import de.hochschule_bochum.DeutschParser.ZuweisungContext;
 public class Codegenerierung extends DeutschBaseListener {
 	private List<String> zwischenCode = new ArrayList<String>();
 	private Map<String, Integer> variablen = new HashMap<>();
+	private List<String> taetigkeiten = new ArrayList<>();
 	private String pathToSave = "";
 	private boolean debug = true;
-
+	private int taetigkeitsCounter = 0;
+	private ProgrammContext prgctx = null;
 	public Codegenerierung(String pathToSave) {
 		this.pathToSave = pathToSave;
 	}
@@ -55,7 +58,7 @@ public class Codegenerierung extends DeutschBaseListener {
 			System.out.println("starte Programm" + ctx);
 			System.out.println(ctx.toStringTree());
 		}
-
+	this.prgctx = ctx;
 		super.enterProgramm(ctx);
 	}
 
@@ -115,45 +118,75 @@ public class Codegenerierung extends DeutschBaseListener {
 		}
 		if (ctx.getChild(1) instanceof VariableContext) {
 			VariableContext varctx = (VariableContext) ctx.getChild(1);
-			if (variablen.containsKey(varctx.getChild(0).getText())) {
-				zwischenCode.add("AUSKELLERN R" + variablen.get(varctx.getChild(0).getText()));
-			} else {
-				for (int r = 0; r < AbstrakteKellerMaschine.REGISTER_SIZE; r++) {
-					if (!variablen.containsValue(r)) {
-						variablen.put(varctx.getChild(0).getText(), r);
-						zwischenCode.add("AUSKELLERN R" + r);
-						break;
-
-					}
-				}
-			}
+			putVarInReg(varctx.getChild(0).getText());
 		}
 		super.enterZuweisung(ctx);
 	}
 
+	private void putVarInReg(String store)
+	{
+		if (variablen.containsKey(store)) {
+			zwischenCode.add("AUSKELLERN R" + variablen.get(store));
+		} else {
+			for (int r = 0; r < AbstrakteKellerMaschine.REGISTER_SIZE -10; r++) {
+				if (!variablen.containsValue(r)) {
+					variablen.put(store, r);
+					zwischenCode.add("AUSKELLERN R" + r);
+					break;
+
+				}
+			}
+		}
+	}
+
+	private void putTaeInReg(String store, boolean first)
+	{
+		int r = 0;
+		if(!taetigkeiten.contains(store)) {
+		taetigkeiten.add(store);
+		r = taetigkeiten.indexOf(store) + AbstrakteKellerMaschine.REGISTER_SIZE -10;
+		variablen.put(store, r);
+
+	}
+
+		r = taetigkeiten.indexOf(store) + AbstrakteKellerMaschine.REGISTER_SIZE -10;
+		if (!first)
+	{
+		zwischenCode.add("AUSKELLERN R" + r);
+	}
+	//	zwischenCode.add("STORE: " + store);
+	}
+
 	@Override
 	public void enterTätigkeit(TätigkeitContext ctx) {
-		zwischenCode.add("GEHE " + ctx.hashCode() + "Tätigkeitsende");
-		zwischenCode.add("MARKIERUNG " + ctx.getChild(1).getText() + "Tätigkeit");
+		zwischenCode.add("GEHEZU " + ctx.hashCode() + "Taetigkeitsende");
+		zwischenCode.add("MARKIERUNG " + ctx.getChild(1).getText() + "Taetigkeit");
 
 		super.enterTätigkeit(ctx);
 	}
 
 	@Override
 	public void exitTätigkeit(TätigkeitContext ctx) {
-		zwischenCode.add("GEHE "+ctx.getChild(1).getText()+"ENDE");
-		zwischenCode.add("MARKIERUNG " + ctx.hashCode() + "Tätigkeitsende");
+		putTaeInReg(ctx.getChild(1).getText(),true);
+	//	zwischenCode.add("ctx: " + ctx.getChild(1).getText());
+	//	zwischenCode.add("Reg Index :"+ variablen.get(ctx.getChild(1).getText()));
+		zwischenCode.add("LEGE R"+ variablen.get(ctx.getChild(1).getText()));
+		zwischenCode.add("GEHEZUSTAPEL");
+		zwischenCode.add("MARKIERUNG " + ctx.hashCode() + "Taetigkeitsende");
 		super.exitTätigkeit(ctx);
 	}
 
 	@Override
 	public void enterTätigkeitsAufruf(TätigkeitsAufrufContext ctx) {
-		zwischenCode.add("GEHE " + ctx.getChild(1).getText() + "Tätigkeit");
+		zwischenCode.add("LADE " + ctx.getChild(1).getText() +"ENDE"+taetigkeitsCounter);
+		putTaeInReg(ctx.getChild(1).getText(),false);
+		zwischenCode.add("GEHEZU " + ctx.getChild(1).getText() + "Taetigkeit");
 		super.enterTätigkeitsAufruf(ctx);
 	}
 	@Override
 	public void exitTätigkeitsAufruf(TätigkeitsAufrufContext ctx) {
-		zwischenCode.add("MARKIERUNG "+ ctx.getChild(1).getText()+"ENDE");
+		zwischenCode.add("MARKIERUNG "+ ctx.getChild(1).getText()+"ENDE"+taetigkeitsCounter);
+		taetigkeitsCounter++;
 		super.exitTätigkeitsAufruf(ctx);
 	}
 	@Override
