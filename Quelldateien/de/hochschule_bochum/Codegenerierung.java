@@ -90,7 +90,13 @@ public class Codegenerierung extends DeutschBaseListener {
 				zwischenCode.add("LADE " + ((TerminalNode) ctx.getChild(i).getChild(0)).getSymbol().getText());
 			} else if (ctx.getChild(i) instanceof VariableContext
 					&& ctx.getChild(i - 1).getText().trim().equals("und weise")) {
-				System.out.println(ctx.getChild(i).getClass());
+				if (ctx.getChild(i).getText().equals("wahr")) {
+					zwischenCode.add("LADE " + "wahr");
+					break;
+				} else if (ctx.getChild(i).getText().equals("falsch")) {
+					zwischenCode.add("LADE " + "falsch");
+					break;
+				}
 				VariableContext varctx = (VariableContext) ctx.getChild(i);
 				zwischenCode.add("LEGE R"
 						+ Integer.toString(requireVariableIndex(((TerminalNode) varctx.getChild(0)).getSymbol())));
@@ -240,11 +246,13 @@ public class Codegenerierung extends DeutschBaseListener {
 					lade(ctx, 1);
 					lade(ctx, 3);
 					zwischenCode.add("MUL");
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode());
 					break;
 				case "oder":
 					lade(ctx, 1);
 					lade(ctx, 3);
 					zwischenCode.add("ADD");
+					zwischenCode.add("GEHEWAHR M" + ctx.hashCode());
 					break;
 				default:
 					System.out.println("default");
@@ -371,10 +379,16 @@ public class Codegenerierung extends DeutschBaseListener {
 		if (ctx.getChild(pos) instanceof ZahlContext) {
 			zwischenCode.add("LADE " + ((TerminalNode) ctx.getChild(pos).getChild(0)).getSymbol().getText());
 		} else if (ctx.getChild(pos) instanceof VariableContext) {
-			VariableContext varctx = (VariableContext) ctx.getChild(pos);
-			zwischenCode.add(
-					"LEGE R" + Integer.toString(requireVariableIndex(((TerminalNode) varctx.getChild(0)).getSymbol())));
+			if (ctx.getChild(pos).getText().equals("wahr")) {
+				zwischenCode.add("LADE " + "wahr");
+			} else if (ctx.getChild(pos).getText().equals("falsch")) {
+				zwischenCode.add("LADE " + "falsch");
+			} else {
+				VariableContext varctx = (VariableContext) ctx.getChild(pos);
+				zwischenCode.add("LEGE R"
+						+ Integer.toString(requireVariableIndex(((TerminalNode) varctx.getChild(0)).getSymbol())));
 
+			}
 		} else if (ctx.getChild(pos) instanceof ZeichenketteContext) {
 
 			String zeichenKette = ((TerminalNode) ctx.getChild(pos).getChild(0)).getSymbol().getText();

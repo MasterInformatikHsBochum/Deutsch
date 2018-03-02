@@ -1,6 +1,5 @@
 Von Anfang
-	Erschaffe b und weise "wahr" zu.
+	Erschaffe b und weise wahr zu.
 	Gebe b aus.
-	Erschaffe a und weise b zu.
-	Gebe a aus.
+	Falls b und wahr dann Gebe falsch aus. Anweisungsende.
 bis Ende.
