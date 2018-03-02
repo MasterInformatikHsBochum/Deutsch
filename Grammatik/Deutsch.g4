@@ -1,7 +1,7 @@
 grammar Deutsch;
 
 programm
-    :   'Von Anfang' (anweisung)* 'bis Ende.'
+    :   (tätigkeit)*? 'Von Anfang' (anweisung)*? 'bis Ende.'
     ;
 
 anweisung
@@ -74,11 +74,11 @@ wiederholung
     ;
 
 tätigkeit
-    :   'Tätigkeitsbeschreibung von' (variable) ':' 'Benötigt wird folgendes:' (variable) 'Anweisungen:' (anweisung)* ('Gib' (zahl | variable | wahrheitswert | zeichenkette) 'zurück.')? 'Schließe Tätigkeit ab.'
+    :   'Tätigkeitsbeschreibung von' (variable) ':' 'Benötigt wird folgendes:' (variable) 'Anweisungen:' (anweisung)* ('Gebe ' (zahl | variable | wahrheitswert | zeichenkette) ' zurück.')? 'Schließe Tätigkeit ab.'
     ;
 
 tätigkeitsAufruf
-    :   'Führe Tätigkeit' (variable) 'mit' (variable) 'aus.'
+    :   'Führe Tätigkeit ' (variable) ' mit ' (variable) ' aus.'
     ;
 
 VARIABLE
