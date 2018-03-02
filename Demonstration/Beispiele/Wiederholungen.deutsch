@@ -1,0 +1,10 @@
+Von Anfang
+    Erschaffe i und weise 0 zu.
+
+    Solange i kleiner 10
+        Gebe i aus.
+        Gebe "\n" aus.
+
+        Füge 1 zu i hinzu.
+    Wiederholungsende.
+bis Ende.
