@@ -1,3 +1,7 @@
+Test:
+	@find Beispiele/ -type f -name "*.deutsch" -exec ./Kompilator -i '{}' -o Test.kompiliert -d \; && \
+	rm Test.kompiliert
+
 Arithmetik:
 	@./Kompilator -i "Beispiele/Arithmetik.deutsch" -o "Arithmetik.kompiliert" -b -d && \
 	./Ausführer "Arithmetik.kompiliert"
