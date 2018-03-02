@@ -141,6 +141,7 @@ public class Codegenerierung extends DeutschBaseListener {
 
 	@Override
 	public void exitTätigkeit(TätigkeitContext ctx) {
+		zwischenCode.add("GEHE "+ctx.getChild(1).getText()+"ENDE");
 		zwischenCode.add("MARKIERUNG " + ctx.hashCode() + "Tätigkeitsende");
 		super.exitTätigkeit(ctx);
 	}
@@ -150,7 +151,11 @@ public class Codegenerierung extends DeutschBaseListener {
 		zwischenCode.add("GEHE " + ctx.getChild(1).getText() + "Tätigkeit");
 		super.enterTätigkeitsAufruf(ctx);
 	}
-
+	@Override
+	public void exitTätigkeitsAufruf(TätigkeitsAufrufContext ctx) {
+		zwischenCode.add("MARKIERUNG "+ ctx.getChild(1).getText()+"ENDE");
+		super.exitTätigkeitsAufruf(ctx);
+	}
 	@Override
 	public void enterVariable(VariableContext ctx) {
 		if (ctx.getParent() instanceof TätigkeitContext) {
