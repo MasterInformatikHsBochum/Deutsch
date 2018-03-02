@@ -1,5 +1,6 @@
 package de.hochschule_bochum.kompilator;
 
+import de.hochschule_bochum.AbstrakterSyntaxbaum;
 import de.hochschule_bochum.Codegenerierung;
 import de.hochschule_bochum.DeutschLexer;
 import de.hochschule_bochum.DeutschParser;
@@ -10,18 +11,25 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Einstiegspunkt {
     public static int main(String args[]) {
         Options options = new Options();
 
-        Option input = new Option("i", "input", true, "input file");
+        Option input = new Option("i", "input", true, "Eingabedatei");
         input.setRequired(true);
         options.addOption(input);
 
-        Option output = new Option("o", "output", true, "output file");
+        Option output = new Option("o", "output", true, "Ausgabedatei");
         output.setRequired(true);
         options.addOption(output);
+
+        Option showBaum = new Option("b", "baum", false, "Baum anzeigen");
+        options.addOption(showBaum);
+
+        Option debugOption = new Option("d", "debug", false, "Informationen anzeigen");
+        options.addOption(debugOption);
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
@@ -38,25 +46,65 @@ public class Einstiegspunkt {
         String eingabeDatei = cmd.getOptionValue("input");
         String ausgabeDatei = cmd.getOptionValue("output");
 
+        boolean zeigeBaum = false;
+        if (cmd.hasOption("baum")) {
+            zeigeBaum = true;
+        }
+
+        boolean debug = false;
+        if (cmd.hasOption("debug")) {
+            debug = true;
+        }
+
+        if (debug) {
+            System.out.println("Information: " + eingabeDatei + " wird eingelesen.");
+        }
 
         ANTLRFileStream inputFileStream = null;
         try {
             inputFileStream = new ANTLRFileStream(eingabeDatei, "utf-8");
         } catch (IOException e) {
-            e.printStackTrace();
+            if (debug) {
+                System.err.println("Fehler: " + eingabeDatei + " konnte nicht eingelesen werden.");
+            }
 
             return 1;
         }
 
-        DeutschLexer lexer = new DeutschLexer(inputFileStream);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        if (debug) {
+            System.out.println("Information: Lexikograph wird ausgeführt.");
+        }
 
-        DeutschParser deutschParser = new DeutschParser(tokens);
-        ParseTree tree = deutschParser.programm();
+        DeutschLexer deutschLexer = new DeutschLexer(inputFileStream);
+        CommonTokenStream commonTokenStream = new CommonTokenStream(deutschLexer);
 
-        Codegenerierung generator = new Codegenerierung(ausgabeDatei, false);
-        ParseTreeWalker läufer = new ParseTreeWalker();
-        läufer.walk(generator, tree);
+        if (debug) {
+            System.out.println("Information: Analysierer wird ausgeführt.");
+        }
+
+        DeutschParser deutschParser = new DeutschParser(commonTokenStream);
+        ParseTree parseTree = deutschParser.programm();
+
+        if (debug) {
+            System.out.println("Information: Kompilator wird ausgeführt.");
+        }
+
+        Codegenerierung codegenerierung = new Codegenerierung(ausgabeDatei, false);
+        ParseTreeWalker parseTreeWalker = new ParseTreeWalker();
+        parseTreeWalker.walk(codegenerierung, parseTree);
+
+        if (zeigeBaum) {
+            if (debug) {
+                System.out.println("Information: Abstrakter Syntaxbaum wird visualisiert.");
+            }
+
+            AbstrakterSyntaxbaum abstrakterSyntaxbaum = new AbstrakterSyntaxbaum(
+                Arrays.asList(deutschParser.getRuleNames()),
+                parseTree
+            );
+
+            abstrakterSyntaxbaum.zeige(eingabeDatei);
+        }
 
         return 0;
     }

@@ -18,7 +18,7 @@ public class Einstiegspunkt {
 
         File f = new File(eingabeDatei);
         if (!f.exists() || f.isDirectory()) {
-            System.err.println(eingabeDatei + " konnte nicht gefunden werden.");
+            System.err.println("Fehler: " + eingabeDatei + " konnte nicht gefunden werden.");
 
             return 1;
         }
